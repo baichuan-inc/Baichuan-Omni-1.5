@@ -1,4 +1,13 @@
+<div align="center">
+  <p align="center">Baichuan-Omni-1.5</p>
 **支持文本、图像、视频、音频输入以及高质量文本、音频输出的多模态大模型**
+  <strong>中文 |
+  [English](./README.md)</strong>
+  
+  <p align="center">
+  Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> <a href="xxxx"> 🤖</a> | MiniCPM-V 2.6 <a href="https://huggingface.co/baichuan-inc/Baichuan-M1-14B-Base">🤗</a>  | BAICHUAN-OMNI-1.5 TECHNICAL REPORT
+</p>
+</div>
 
 **Baichuan-Omni-1.5** 是从 Baichuan-omni 升级的最新的端到端训练的支持全模态输入，双模态输出的多模态大模型。该模型使用了7B的LLLM，可以以端到端方式，接受图像、视频、文本、音频作为输入，并生成高质量文本和语音输出。自2024年10月以来，我们以实现高性能和端到端的兼容多个模态为目标，发布了3个版本的模型。目前系列中最值得关注的模型包括：
 
