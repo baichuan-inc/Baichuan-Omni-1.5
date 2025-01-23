@@ -2,7 +2,7 @@
 
 <img src="./assets/logo.png" width="300em" ></img> 
 
-  **支持文本、图像、视频、音频输入以及高质量文本、音频输出的全模态大模型**
+  **支持文本、图像、视频、音频输入以及文本、音频输出的全模态大模型**
 
   <strong>中文 |
   [English](./README.md)</strong>
