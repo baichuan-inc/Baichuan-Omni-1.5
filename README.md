@@ -1,6 +1,6 @@
 <div align="center">
-  <p align="center" style="font-size:20px;" >Baichuan-Omni-1.5 🔥🔥🔥</p>
-  <p align="center">支持文本、图像、视频、音频输入以及高质量文本、音频输出的多模态大模型</p>
+<img src="./assets/logo.png" width="300em" ></img> 
+<p align="center">支持文本、图像、视频、音频输入以及高质量文本、音频输出的多模态大模型</p>
   <strong>中文 |
   [English](./README.md)</strong>
   
