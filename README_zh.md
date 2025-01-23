@@ -23,13 +23,13 @@
 - [🏁 Baichuan-Omni-1.5](#baichuan-omni-1.5)
 - [🧠 多阶段全模态的训练框架](#多阶段全模态的训练框架)
 - [📊 性能评估](#性能评估)
-  - [纯文本理解能力](#纯文本理解能力)
+  <!-- - [纯文本理解能力](#纯文本理解能力)
   - [图像理解能力](#图像理解能力)
   - [视频理解能力](#视频理解能力)
   - [语音理解能力](#语音理解能力)
   - [语音生成能力](#语音生成能力)
   - [全模态理解能力](#全模态理解能力)
-  - [医疗图像理解能力](#医疗图像理解能力)
+  - [医疗图像理解能力](#医疗图像理解能力) -->
 - [🍰 典型示例](#典型示例)
 - [🚀 本地 WebUI Demo](#本地-WebUI-Demo)
   - [图像Demo](#图像demo)
@@ -81,6 +81,15 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 <br>
 
 ### 性能评估
+
+<div align="center">
+<img src="./assets/performance.png" , width=80%>
+</div>
+
+<br>
+
+<details>
+<summary>点击查看各评测集的具体指标。</summary>
 
 #### 纯文本理解能力
 |                                 |      | Comprehensive Tasks |              |                |               |
@@ -174,6 +183,8 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 |            VITA-1.5             |  7B  |     36.7     |    56.7    |
 |          MiniCPM-o 2.6          |  8B  |     41.5     |    71.8    |
 |        Baichuan-Omni-1.5        |  7B  |              |            |
+
+</details>
 
 ### 典型示例
 
