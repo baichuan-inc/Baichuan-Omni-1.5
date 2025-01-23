@@ -155,7 +155,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 <details>
 <summary>点击查看语音生成能力详细评测结果。</summary>
 #### 语音生成能力
-
+</details>
 
 <details>
 <summary>点击查看全模态理解能力详细评测结果。</summary>
