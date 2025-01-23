@@ -1,11 +1,11 @@
 <div align="center">
-  <p align="center">Baichuan-Omni-1.5</p>
+  <p align="center" style="font-size:20px;" >Baichuan-Omni-1.5 🔥🔥🔥</p>
   <p align="center">支持文本、图像、视频、音频输入以及高质量文本、音频输出的多模态大模型</p>
   <strong>中文 |
   [English](./README.md)</strong>
   
   <p align="center">
-  Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> <a href="xxxx"> 🤖</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-M1-14B-Base">🤗</a>  | BAICHUAN-OMNI-1.5 TECHNICAL REPORT
+  Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> <a href="xxxx"> 🤖</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5-Base">🤗</a>  | BAICHUAN-OMNI-1.5 TECHNICAL REPORT
 </p>
 </div>
 
