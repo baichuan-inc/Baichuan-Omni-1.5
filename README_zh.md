@@ -72,7 +72,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 ### 多阶段全模态的训练框架
 
 <div align="center">
-<img src="./images/train-pipeline.png" , width=80%>
+<img src="./assets/train-pipeline.png" , width=80%>
 </div>
 
 <br>
