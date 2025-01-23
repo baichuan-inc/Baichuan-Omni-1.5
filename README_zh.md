@@ -89,7 +89,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 <br>
 
 <details>
-<summary>点击查看各评测集的具体指标。</summary>
+<summary>点击查看纯文本理解能力详细评测结果。</summary>
 
 #### 纯文本理解能力
 |                                 |      | Comprehensive Tasks |              |                |               |
