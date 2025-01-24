@@ -971,6 +971,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 conda create -n baichuan_omni python==3.12
 conda activate baichuan_omni
 pip install -r baichuan_omni_requirements.txt
+apt install llvm ffmpeg
 ```
 ##### 下载模型并修改模型路径
 修改 web_demo/constants.py 中的 MODEL_PATH 为本地模型路径

@@ -958,6 +958,7 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 conda create -n baichuan_omni python==3.10
 conda activate baichuan_omni
 pip install -r baichuan_omni_requirements.txt
+apt install llvm ffmpeg
 ```
 ##### Download the model and modify the model path
 Modify MODEL_PATH in web_demo/constants.py to the local model path
