@@ -975,12 +975,37 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 
 ### 本地 WebUI Demo
 
+#### 准备工作
+
+##### 创建虚拟环境
+```bash
+conda create -n baichuan_omni python==3.10
+conda activate baichuan_omni
+pip install -r baichuan_omni_requirements.txt
+```
+##### 下载模型并修改模型路径
+修改 web_demo/constants.py 中的 MODEL_PATH 为本地模型路径
+
 #### 图像Demo
 
+```bash
+cd web_demo
+python vision_s2s_gradio_demo_cosy_multiturn.py
+```
 
 #### 音频Demo
 
+```bash
+cd web_demo
+python s2s_gradio_demo_cosy_multiturn.py
+```
+
 #### 视频Demo
+
+```bash
+cd web_demo
+python video_s2s_gradio_demo_cosy_singleturn.py
+```
 
 ### 微调
 coming soon
