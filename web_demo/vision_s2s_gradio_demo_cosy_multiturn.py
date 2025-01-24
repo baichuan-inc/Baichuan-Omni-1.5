@@ -13,6 +13,13 @@ from constants import *
 from PIL import Image
 from decord import VideoReader, cpu
 import shutil
+import io
+import cv2
+
+os.makedirs(g_cache_dir, exist_ok=True)
+os.makedirs(g_cache_dir+"/image", exist_ok=True)
+os.makedirs(g_cache_dir+"/audio", exist_ok=True)
+os.makedirs(g_cache_dir+"/video", exist_ok=True)
 
 sys.path.append(os.path.join(COSY_VOCODER))
 from cosy24k_vocoder import Cosy24kVocoder
@@ -94,7 +101,7 @@ def generate_text_step(pret, plen, kv_cache_flag, audiogen_flag=True):
                 attention_mask=torch.ones_like(pret.sequences),
                 tokenizer=tokenizer,
                 past_key_values=(pret.past_key_values),
-                stop_strings=[audiogen_start_token],
+                stop_strings=[audiogen_start_token,',','!','?','，','。','！','？','. '],
                 max_new_tokens=50, do_sample=True, temperature=0.3, top_k=20, top_p=0.85, repetition_penalty=1.05, return_dict_in_generate=True,
             )
     newtext = tokenizer.decode(textret.sequences[0, plen:])
@@ -160,8 +167,26 @@ def generate_response(content, audiogen_flag=False):
 
 def load_audio(audio_path):
     wave, sr = torchaudio.load(audio_path)
+    if sr != sampling_rate:
+        wave = torchaudio.functional.resample(wave, sr, sampling_rate)
     wave_pkg = (sampling_rate, (torch.clamp(wave.squeeze(), -0.99, 0.99).numpy() * 32768.0).astype(np.int16))
     return wave_pkg
+
+def load_video(video_path):
+    cap = cv2.VideoCapture(video_path)
+    ret, frame = cap.read()
+    if not ret:
+        return None
+    success, buffer = cv2.imencode('.mp4', frame)
+    if not success:
+        return None
+    return buffer.tobytes()
+
+def load_image(image_path):
+    with Image.open(image_path) as img:
+        buffer = io.BytesIO()
+        img.save(buffer, format='PNG')
+        return buffer.getvalue()
 
 def is_video(file_path):
     video_extensions = {'.mp4', '.avi', '.mov', '.mkv', '.flv', '.wmv', '.webm'}
@@ -173,24 +198,10 @@ def is_image(file_path):
     _, ext = os.path.splitext(file_path)
     return ext.lower() in image_extensions
 
-def is_wav(file_path):
-    wav_extensions = {'.wav'}
-    _, ext = os.path.splitext(file_path)
-    return ext.lower() in wav_extensions
-    config_path = os.path.join(model_path, 'origin_config.json')
-    config = VITAQwen2Config.from_pretrained(config_path)
-    model = VITAQwen2ForCausalLM.from_pretrained(model_path, config=config, low_cpu_mem_usage=True)
-    embedding = model.get_input_embeddings()
-    del model
-    return embedding
-
-
 global g_history
 global g_turn_i
 g_history = []
 g_turn_i = 0
-
-os.makedirs(g_cache_dir, exist_ok=True)
 
 def clear_history():
     global g_history
@@ -198,6 +209,7 @@ def clear_history():
     global g_cache_dir
     g_history = []
     g_turn_i = 0
+    os.system(f"rm -rf {g_cache_dir}")
     return None, None, None, None, None, None
 
 def clear_upload_file():
@@ -205,7 +217,6 @@ def clear_upload_file():
 
 def preprocess_messages(messages, audiogen_flag=True):
     text = ""
-    print(messages)
     for i, msg in enumerate(messages):
         if audiogen_flag and msg["role"] == "assistant":
             text += role_prefix['audiogen']
@@ -216,13 +227,112 @@ def preprocess_messages(messages, audiogen_flag=True):
     text += role_prefix["assistant"]
     return text
 
+def parse_assistant_content(content):
+
+    wave = []
+    text = ""
+
+    result = []
+
+    parts = re.split(r'<audiogen_start_baichuan>', content)
+    prev_text = parts[0].strip()
+    
+    for part in parts[1:]:
+        end_split = re.split(r'<audiogen_end_baichuan>', part, 1)
+        
+        if len(end_split) != 2:
+            continue  
+            
+        json_str, remaining = end_split
+        json_str = json_str.strip()
+
+        cleaned_json = json_str.replace('\\/', '/')
+        
+        try:
+            json_data = json.loads(cleaned_json)
+        except json.JSONDecodeError:
+            continue  
+        if prev_text:
+            result.append((prev_text, json_data))
+            
+        prev_text = remaining.strip()
+ 
+    for t, w in result:
+        text += t
+        wav_pkg = load_audio(w["path"])
+        wave.append(wav_pkg[1])
+    wave = np.concatenate(wave, axis=0)
+    return text, (wav_pkg[0], wave)
+
 def postprocess_messages(messages):
+    
     new_messages = []
     for i, msg in enumerate(messages):
-        new_messages.append({
-            'role': msg['role'],
-            'content': re.sub(r'<audio_start_baichuan>.*?<audio_end_baichuan>|<audiogen_start_baichuan>.*?<audiogen_end_baichuan>', '<audio>', msg['content'])
-        })
+        role = msg["role"]
+        content = msg["content"]
+
+        if role == "assistant":
+            text, wave = parse_assistant_content(content)
+            new_messages.append(
+                {
+                    "role": role,
+                    "content": gr.Audio(wave),
+                }
+            )
+            new_messages.append(
+                {
+                    "role": role,
+                    "content": text,
+                }
+            )
+        elif role == "user":
+            match_regex = re.compile(image_start_token + r'(.*?)' + image_end_token)
+            mm_info_list = re.findall(match_regex, content)
+            for mm_info in mm_info_list:
+                image_path = json.loads(mm_info)["local"]
+                print(image_path)
+                image_content = gr.Image(image_path)
+                new_messages.append(
+                    {
+                        "role": role,
+                        "content": image_content,
+                    }
+                )
+            
+            match_regex = re.compile(video_start_token + r'(.*?)' + video_end_token)
+            mm_info_list = re.findall(match_regex, content)
+            for mm_info in mm_info_list:
+                video_path = json.loads(mm_info)["local"]
+                print(video_path)
+                video_content = gr.Video(video_path)
+                new_messages.append(
+                    {
+                        "role": role,
+                        "content": video_content,
+                    }
+                )
+            
+            pattern = audio_start_token + r'(.*?)' + audio_end_token
+            match = re.search(pattern, content, re.DOTALL)
+            if match:
+                audio_path_json = match.group(1)
+                audio_path = json.loads(audio_path_json)["path"]
+                print(audio_path)
+                wav_pkg = load_audio(audio_path)
+                audio_content = gr.Audio(wav_pkg)
+                new_messages.append(
+                    {
+                        "role": role,
+                        "content": audio_content,
+                    }
+                )
+        else: # system
+            new_messages.append(
+                {
+                    "role": "user",
+                    "content": content,
+                }
+            )
     return new_messages
 
 def generate_one_turn(input_audio_path, system_prompt, query, input_image_file, input_video_file, audiogen_flag=True):
@@ -235,7 +345,7 @@ def generate_one_turn(input_audio_path, system_prompt, query, input_image_file, 
             "role": "system", 
             "content": system_prompt
         })
-    
+
     content = ""
     if input_image_file is not None:
         print("input_image_path", input_image_file)
@@ -283,16 +393,15 @@ def generate_one_turn(input_audio_path, system_prompt, query, input_image_file, 
     print("message", message)
     for show_text, full_text, wave_segment in generate_response(message, audiogen_flag):
         if wave_segment is not None and audiogen_flag:
+            post = postprocess_messages(g_history)
             yield wave_segment, show_text, postprocess_messages(g_history)
         else:
+            post = postprocess_messages(g_history)
             yield None, show_text, postprocess_messages(g_history)
     g_history.append({
         'role': 'assistant',
         'content': full_text,
     })
-
-    print("History!!!")
-    print(g_history)
     g_turn_i += 1
     
 def convert_webm_to_mp4(input_file, output_file):
@@ -333,7 +442,7 @@ with gr.Blocks() as demo:
                 add_video_file_btn = gr.UploadButton("📁 Upload (上传视频)", file_types=["video"])
             with gr.Row():
                 image_output = gr.Image(type='pil', label="图像")
-                video_output = gr.Video(label="视频",show_download_button=True, format='mp4', autoplay=True)
+                video_output = gr.Video(label="视频",show_download_button=True, format='mp4', autoplay=False)
 
             submit = gr.Button("submit")
             clear = gr.Button("clear")
@@ -341,7 +450,7 @@ with gr.Blocks() as demo:
             audio_flag = gr.Checkbox(label='response in audio', value=True)
             
         with gr.Column():
-            chat_box = gr.Chatbot(type="messages")
+            chat_box = gr.Chatbot(label="History", type="messages")
             generated_text = gr.Textbox(label="Generated Text", lines=5, max_lines=200)
             generated_audio = gr.Audio(
                     label="Generated Audio",
@@ -373,7 +482,5 @@ if __name__ == "__main__":
         server_name="0.0.0.0",
     server_port=145,
     debug=False,
-    # ssl_verify=False,
-    # ssl_keyfile="key.pem",
-    # ssl_certfile="cert.pem",
-    share_server_protocol="https",)
+    share_server_protocol="https",
+    allowed_paths=[g_cache_dir])

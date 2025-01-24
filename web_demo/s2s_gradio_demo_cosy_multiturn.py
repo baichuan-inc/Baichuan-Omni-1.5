@@ -75,13 +75,12 @@ def generate_text_step(pret, plen, kv_cache_flag, audiogen_flag=True):
                 do_sample=True, temperature=0.8, top_k=20, top_p=0.85, repetition_penalty=1.1, return_dict_in_generate=True,
             )
     else:
-        # print("before text generation\n{}".format(tokenizer.decode(pret.sequences[0, :])))
         textret = model.generate(
                 pret.sequences,
                 attention_mask=torch.ones_like(pret.sequences),
                 tokenizer=tokenizer,
                 past_key_values=(pret.past_key_values),
-                stop_strings=[audiogen_start_token],
+                stop_strings = [audiogen_start_token,',','!','?','，','。','！','？','. '],
                 max_new_tokens=50, do_sample=True, temperature=0.3, top_k=20, top_p=0.85, repetition_penalty=1.05, return_dict_in_generate=True,
             )
     newtext = tokenizer.decode(textret.sequences[0, plen:])
@@ -147,6 +146,8 @@ def generate_response(content, audiogen_flag=False):
 
 def load_audio(audio_path):
     wave, sr = torchaudio.load(audio_path)
+    if sr != sampling_rate:
+        wave = torchaudio.functional.resample(wave, sr, sampling_rate)
     wave_pkg = (sampling_rate, (torch.clamp(wave.squeeze(), -0.99, 0.99).numpy() * 32768.0).astype(np.int16))
     return wave_pkg
 
@@ -164,11 +165,11 @@ def clear_history():
     global g_cache_dir
     g_history = []
     g_turn_i = 0
+    os.system(f"rm -rf {g_cache_dir}")
 
 
 def preprocess_messages(messages, audiogen_flag=True):
     text = ""
-    print(messages)
     for i, msg in enumerate(messages):
         if audiogen_flag and msg["role"] == "assistant":
             text += role_prefix['audiogen']
@@ -179,21 +180,95 @@ def preprocess_messages(messages, audiogen_flag=True):
     text += role_prefix["assistant"]
     return text
 
+def parse_assistant_content(content):
+
+    wave = []
+    text = ""
+
+    result = []
+
+    parts = re.split(r'<audiogen_start_baichuan>', content)
+    prev_text = parts[0].strip()
+    
+    for part in parts[1:]:
+        end_split = re.split(r'<audiogen_end_baichuan>', part, 1)
+        
+        if len(end_split) != 2:
+            continue  
+            
+        json_str, remaining = end_split
+        json_str = json_str.strip()
+
+        cleaned_json = json_str.replace('\\/', '/')
+        
+        try:
+            json_data = json.loads(cleaned_json)
+        except json.JSONDecodeError:
+            continue  
+        if prev_text:
+            result.append((prev_text, json_data))
+            
+        prev_text = remaining.strip()
+ 
+    for t, w in result:
+        text += t
+        wav_pkg = load_audio(w["path"])
+        wave.append(wav_pkg[1])
+    wave = np.concatenate(wave, axis=0)
+    return text, (wav_pkg[0], wave)
+
 def postprocess_messages(messages):
+     
+    pattern = audio_start_token + r'(.*?)' + audio_end_token
+
     new_messages = []
+
     for i, msg in enumerate(messages):
-        new_messages.append(
-            {
-            'role': msg['role'],
-            'content': re.sub(r'<audio_start_baichuan>.*?<audio_end_baichuan>|<audiogen_start_baichuan>.*?<audiogen_end_baichuan>', '<audio>', msg['content'])
-        })
+        role = msg["role"]
+        content = msg["content"]
+
+        if role == "assistant":
+            text, wave = parse_assistant_content(content)
+            new_messages.append(
+                {
+                    "role": role,
+                    "content": gr.Audio(wave),
+                }
+            )
+            new_messages.append(
+                {
+                    "role": role,
+                    "content": text,
+                }
+            )
+        elif role == "user":
+            match = re.search(pattern, content, re.DOTALL)
+            if match:
+                audio_path_json = match.group(1)
+                audio_path = json.loads(audio_path_json)["path"]
+                wav_pkg = load_audio(audio_path)
+                content = gr.Audio(wav_pkg)
+
+            new_messages.append(
+                {
+                    "role": role,
+                    "content": content,
+                }
+            )
+        else: # system
+            new_messages.append(
+                {
+                    "role": "user",
+                    "content": content,
+                }
+            )
     return new_messages
 
 def generate_one_turn(input_audio_path, system_prompt, audiogen_flag=True):
     global g_history
     global g_turn_i
     global g_cache_dir
-    print("input_audio_path", input_audio_path)
+
     if len(g_history) == 0:
         g_history.append({
             "role": "system", 
@@ -207,19 +282,18 @@ def generate_one_turn(input_audio_path, system_prompt, audiogen_flag=True):
         "content": audio_start_token + ujson.dumps({'path': fn_wav}, ensure_ascii=False) + audio_end_token
     })
     message = preprocess_messages(g_history, audiogen_flag)
-    print("message", message)
     for show_text, full_text, wave_segment in generate_response(message, audiogen_flag):
         if wave_segment is not None and audiogen_flag:
+            post = postprocess_messages(g_history)
             yield wave_segment, show_text, postprocess_messages(g_history)
         else:
+            post = postprocess_messages(g_history)
             yield None, show_text, postprocess_messages(g_history)
+
     g_history.append({
         'role': 'assistant',
         'content': full_text,
     })
-
-    print("History!!!")
-    print(g_history)
     g_turn_i += 1
 
 
@@ -235,7 +309,7 @@ with gr.Blocks() as demo:
             audio_flag = gr.Checkbox(label='response in audio', value=True)
             
         with gr.Column():
-            chat_box = gr.Chatbot(type="messages")
+            chat_box = gr.Chatbot(label="History", type="messages")
             generated_text = gr.Textbox(label="Generated Text", lines=5, max_lines=200)
             generated_audio = gr.Audio(
                     label="Generated Audio",
@@ -257,4 +331,5 @@ if __name__ == "__main__":
         server_name="0.0.0.0",
     server_port=145,
     debug=False,
-    share_server_protocol="https",)
+    share_server_protocol="https",
+    allowed_paths=[g_cache_dir])
