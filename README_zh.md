@@ -820,7 +820,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
     <thead>
     <tbody>
           <tr>
-          <td align="center">Model</td>
+          <td>Model</td>
           <td>Size</td>
           <td>Image & <br> Audio (Acc.)</td>
           <td>Image Caption & <br> Audio (Acc.)</td>
