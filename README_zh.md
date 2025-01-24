@@ -10,6 +10,9 @@
   <p align="center">
   Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> <a href="xxxx"> 🤖</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5-Base">🤗</a>  | 技术报告 <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medical">📖</a> | OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medical">🤗</a> 
 </p>
+  <p align="center">
+    OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medical">🤗</a> | openAudioBench <a href="https://huggingface.co/datasets/baichuan-inc/openAudioBench">🤗</a> 
+</p>
 </div>
 
 **Baichuan-Omni-1.5** 是从 Baichuan-omni 升级的最新的、端到端训练的、支持全模态输入/双模态输出的多模态大模型。该模型使用Qwen2.5-7B昨晚大语言模型基座，可以以端到端方式，接受图像、视频、文本、音频作为输入，并且以可控的方式生成高质量文本和语音。
