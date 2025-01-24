@@ -20,6 +20,11 @@ import wave
 import cv2
 from constants import *
 
+os.makedirs(g_cache_dir, exist_ok=True)
+os.makedirs(g_cache_dir+"/image", exist_ok=True)
+os.makedirs(g_cache_dir+"/audio", exist_ok=True)
+os.makedirs(g_cache_dir+"/video", exist_ok=True)
+
 sys.path.append(os.path.join(COSY_VOCODER))
 from cosy24k_vocoder import Cosy24kVocoder
 vocoder = Cosy24kVocoder.from_pretrained(os.path.join(COSY_VOCODER, "hift.pt"))
@@ -35,13 +40,6 @@ def init_model():
         tokenizer, training=False, relative_path="/", default_client="cos"
     )
     return model, tokenizer
-
-os.makedirs(g_cache_dir, exist_ok=True)
-os.makedirs(g_cache_dir+"/image", exist_ok=True)
-os.makedirs(g_cache_dir+"/audio", exist_ok=True)
-os.makedirs(g_cache_dir+"/video", exist_ok=True)
-
-os.environ['CUDA_VISIBLE_DEVICES']='0'
 
 model, tokenizer = init_model()
 

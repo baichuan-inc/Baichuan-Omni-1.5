@@ -969,7 +969,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 
 ##### 创建虚拟环境
 ```bash
-conda create -n baichuan_omni python==3.10
+conda create -n baichuan_omni python==3.12
 conda activate baichuan_omni
 pip install -r baichuan_omni_requirements.txt
 ```
