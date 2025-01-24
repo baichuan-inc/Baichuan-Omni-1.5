@@ -816,16 +816,16 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
       <td colspan="2">AlpacaEval</td>
     </tr>
     <tr>
-      <td>s → t</td>
-      <td>s → s</td>
-      <td>s → t</td>
-      <td>s →s</td>
-      <td>s → t</td>
-      <td>s →s</td>
-      <td>s → t</td>
-      <td>s →s</td>
       <td>s→t</td>
-      <td>s →s</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
     </tr>
     <tr>
       <td colspan="12">Proprietary Models</td>
