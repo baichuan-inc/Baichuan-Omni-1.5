@@ -799,16 +799,16 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
       <td colspan="2">AlpacaEval</td>
     </tr>
     <tr>
-      <td>s → t</td>
-      <td>s → s</td>
-      <td>s → t</td>
-      <td>s →s</td>
-      <td>s → t</td>
-      <td>s →s</td>
-      <td>s → t</td>
-      <td>s →s</td>
       <td>s→t</td>
-      <td>s →s</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
     </tr>
     <tr>
       <td colspan="12">Proprietary Models</td>
