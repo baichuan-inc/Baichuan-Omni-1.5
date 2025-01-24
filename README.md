@@ -1,186 +1,1027 @@
 <div align="center">
 
-<img src="./assets/logo.png" width="300em" ></img> 
+<img src="./assets/logo.png" width="300em"></img>
 
-  **支持文本、图像、视频、音频输入以及文本、音频输出的全模态大模型**
+## **Open-source Omni-modal Foundation Model Supporting Text, Image, Video, and Audio Inputs as Well as Text and Audio Outputs**
 
-  <strong>中文 |
-  [English](./README.md)</strong>
-  
-  <p align="center">
-  Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> <a href="xxxx"> 🤖</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5-Base">🤗</a>  | BAICHUAN-OMNI-1.5 TECHNICAL REPORT
+<strong>English | 
+[中文](./README_zh.md)</strong>
+
+<p align="center">
+Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> <a href="xxxx">🤖</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5-Base">🤗</a> | Technical Report <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medical">📖</a>
+</p>
+<p align="center">
+OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medical">🤗</a> | openAudioBench <a href="https://huggingface.co/datasets/baichuan-inc/openAudioBench">🤗</a>
 </p>
 </div>
 
-**Baichuan-Omni-1.5** 是从 Baichuan-omni 升级的最新的端到端训练的支持全模态输入，双模态输出的多模态大模型。该模型使用了7B的LLLM，可以以端到端方式，接受图像、视频、文本、音频作为输入，并生成高质量文本和语音输出。自2024年10月以来，我们以实现高性能和端到端的兼容多个模态为目标，发布了3个版本的模型。目前系列中最值得关注的模型包括：
+**Baichuan-Omni-1.5** is the latest end-to-end trained omni-modal large model that supports comprehensive input modalities (text, image, video, audio) and dual output modalities (text and audio). Built upon the Qwen2.5-7B language model, it can process inputs from various modalities and generate high-quality text and speech outputs in a controllable manner.
 
-- **Baichuan-omni**: Baichuan-omni 是**业内首个**(2024.10)开源的能够处理文本、音频、图像、视频的全模态模型。该模型使用高质量的全模态数据，通过端到端方式训练和推理。
+- **Baichuan-Omni-1.5-Base**: To promote the development of omni-modal models, we have open-sourced a foundational model trained on high-quality, extensive datasets. This model has not undergone supervised fine-tuning (SFT) for instructions, offering great flexibility and serving as the **best-performing foundational omni-modal model** currently available.
 
-- **Baichuan-Omni-1.5 Base**: 为促进全模态大模型发展，我们开源了使用海量数据训练的全模态基座模型，该模型未经SFT指令微调，可塑性强。Baichuan-Omni-1.5 base 是**业内首个**开源的全模态纯基座模型。
+- **Baichuan-Omni-1.5**: Leveraging the robust Baichuan-Omni-1.5-Base, this model undergoes end-to-end training with high-quality omni-modal aligned data. Baichuan-Omni-1.5 achieves text, image, video, and audio understanding capabilities comparable to **GPT-4o-mini**.
 
-- **Baichuan-Omni-1.5 **: 基于性能强悍的Baichuan-Omni-1.5-base，使用高质量的全模态对齐数据，进行端到端的多模态指令数据训练。Baichuan-Omni-1.5 总参数量 xxx B，**视觉、语音和多模态流式能力达到了 GPT-4o-mini 级别**，是开源社区中模态支持最丰富、性能一流的模型之一。在新的语音模式中，Baichuan-Omni-1.5 **支持高质量可控制声音的中英双语语音对话，还具备情感/语速/风格控制、端到端声音克隆、角色扮演等进阶能力**。模型也进一步提升了 Baichuan-Omni-1.5 的 **真实世界图像、医疗图像理解、和视频理解等视觉能力**。基于其领先的高质量数据、端到端的全模态训练策略，Baichuan-Omni-1.5 成为了**首个在各个模态上都具有一流表现**的全模态大模型。
+## 📖 Table of Contents
+
+- [🏁 Baichuan-Omni-1.5](#baichuan-omni-1.5)
+- [🧠 Multi-stage Omni-modal Training Framework](#multi-stage-omni-modal-training-framework)
+- [📊 Performance Evaluation](#performance-evaluation)
+- [🍰 Example Use Cases](#example-use-cases)
+- [🚀 Local WebUI Demo](#local-webui-demo)
+  - [Image Demo](#image-demo)
+  - [Video Demo](#video-demo)
+  - [Audio Demo](#audio-demo)
+- [⚙️ Fine-tuning](#fine-tuning)
+- [📣 Acknowledgments](#acknowledgments)
+- [⚠️ Disclaimer](#disclaimer)
+- [📜 License](#license)
+- [📜 Citation](#citation)
 
 ## Baichuan-Omni-1.5
 
-Baichuan-Omni-1.5 是 Baichuan-omni 系列的最新、性能一流模型。该模型通过端到端方式训练和推理。相比 Baichuan-omni，该模型在文本/图像/音频/视频理解以及文本/音频生成上有了显著提升，并支持了实时语音对话和多模态流式交互的新功能。Baichuan-Omni-1.5 的主要特性包括：
+Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-omni series, trained and inferred through an end-to-end approach. Compared to its predecessor, Baichuan-omni, this model demonstrates significant improvements in text/image/audio/video understanding and text/audio generation, alongside new functionalities such as controllable real-time voice dialogue and omni-modal real-time interaction. Key features of Baichuan-Omni-1.5 include:
 
-- **多模态理解和交互能力。**
-Baichuan-Omni-1.5 接受图像、视频、文本、音频作为输入，并生成高质量文本和语音输出，能够**接受连续的视频和音频流，并和用户进行实时语音交互**。在针对全模态理解的综合评测基准 OminiBench 中，Baichuan-Omni-1.5 取得开源社区一流水平，并**超过了 GPT-4o-mini 和 MiniCPM-o 2.6**。
+- **Omni-modal Understanding and Interaction Capabilities**: Accepts images, videos, texts, and audios as inputs, generating high-quality text and speech outputs. It can handle continuous video and audio streams, enabling **real-time voice interactions** with users. In comprehensive benchmarks like OminiBench, Baichuan-Omni-1.5 achieves top-tier performance within the open-source community, surpassing **GPT-4o-mini**.
 
-- **视觉能力。**
-Baichuan-Omni-1.5 在 OpenCompass 榜单上（综合 xxx 个主流多模态评测基准）平均得分 xxx，**以 8B 量级的大小在单图理解方面超越了 GPT-4o-mini、Gemini 1.5 Pro 和 Claude 3.5 Sonnet 等主流商用闭源多模态大模型**。此外，它的视频理解表现也**优于 GPT-4V 和 Claude 3.5 Sonnet**，并展现出了优秀的上下文学习能力。
+- **Excellent Visual Capabilities**: On the OpenCompass benchmark suite, Baichuan-Omni-1.5 scores an average of 73.3 across ten visual evaluation sets. Within the 7B parameter range, it outperforms **GPT-4o-mini**, Gemini 1.5 Pro, and Claude 3.5 Sonnet in single-image understanding. Its video comprehension also exceeds that of **GPT-4V**, Claude 3.5 Sonnet, and other open-source omni-modal models.
 
-- **语音能力。**
-Baichuan-Omni-1.5 **支持高质量可控制声音的中英双语实时对话**。Baichuan-Omni-1.5 在语音理解任务（如 ASR 和 STT 等）**优于 GPT-4o-realtime**，并在语音对话的语义和声学评估中展现了**开源模型中最高的语音生成性能**。它还支持情绪/语速/风格控制、语音克隆、角色扮演等进阶能力。
+- **Outstanding Speech Capabilities**: Supports **high-quality controllable bilingual (Chinese and English) real-time conversations**. Baichuan-Omni-1.5 excels in speech understanding tasks (e.g., ASR and STT), surpassing **GPT-4o-realtime**, and demonstrates the highest speech generation performance among open-source models in semantic and acoustic evaluations. Additional capabilities include emotion/speed/style control, voice cloning, and role-playing.
 
-- **医疗图像理解能力。**
-Baichuan-Omni-1.5 在GMAI-MMBench以及Openmm-Medical上取得了最佳的表现。均分上，超过Qwen2-VL-72b 3分，即 80.01 v.s 83.3.
+- **Leading Medical Image Understanding**: Achieves state-of-the-art performance on GMAI-MMBench and OpenMM-Medical. Specifically, on OpenMM-Medical, Baichuan-Omni-1.5 scores 83.8% using a 7B LLM, surpassing Qwen2-VL-72B's score of 80.7%.
 
-- **真实世界理解能力及其他功能。**
-Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力，其可以处理任意长宽比的图像，像素数可达 180 万（如 1344x1344）。在 RealWorldQA 上取得**68.8分的成绩，超过 GPT-4o-mini 等商用闭源模型以及最近开源的全模态模型MiniCPM-o 2.6。在MMBench上的英文/中文评测子集分别取得85.4/85.0的高分**。
+- **Strong Real-world Understanding and Other Features**: Enhances numerous visual understanding capabilities, handling images of arbitrary aspect ratios up to 1.8 million pixels (e.g., 1344x1344). Scores 68.8 on RealWorldQA, outperforming commercial closed-source models and recent open-source omni-modal models. It also ranks first in both English and Chinese subsets of MMBench with scores of 85.6% and 83.6%, respectively.
 
-**模型架构**
+### Model Architecture
 
-- **端到端全模态架构。** 通过**多阶段，端到端**的方式训练不同模态的编/解码模块以充分利用丰富的不同模态涵盖的知识。全模态预训练阶段，模型完全使用 NTP 损失进行端到端训练。
-- **高质量可控制的声音方案。** 设计了新的多模态系统提示，包含传统文本系统提示词，和**用于指定模型声音的语音系统提示词**。模型可在推理时灵活地通过文字或语音样例控制声音风格，并支持端到端声音克隆和音色创建等高级能力。
+- **End-to-End Omni-modal Architecture**: Trains different modality encoders/decoders through a multi-stage, end-to-end progressive method to fully leverage rich knowledge across modalities, promoting complementary knowledge integration. During the omni-modal pretraining phase, the model is entirely trained using NTP loss.
+- **High-Quality Controllable Voice Solutions**: Redesigns the multimodal system prompt to include traditional text prompts and **voice system prompts** for specifying the model's voice characteristics. The model can flexibly control voice styles via textual or vocal samples during inference, supporting advanced capabilities like end-to-end voice cloning and voice creation.
 
-
-### 多阶段全模态的训练框架
+### Multi-stage Omni-modal Training Framework
 
 <div align="center">
-<img src="./images/train-pipeline.png" , width=80%>
+<img src="./assets/train-pipeline.png" , width=80%>
 </div>
 
 <br>
 
-### 性能评估
-**纯文本理解能力**
-|                                 |      | Comprehensive Tasks |              |                |               |
-|:-------------------------------:|:----:|:-------------------:|:------------:|:--------------:|:-------------:|
-|              Model              | Size |     MMLU (Acc.)     | CMMLU (Acc.) | AGIEval (Acc.) | C-Eval (Acc.) |
-|        Proprietary Models       |      |                     |              |                |               |
-|              GPT 4o             |   -  |        88.0♢        |     78.3♢    |      62.3♢     |     86.0♢     |
-|           GPT 4o mini           |   -  |         82.0        |     67.6     |      52.2      |      63.4     |
-|  Open-source Models (Pure text) |      |                     |              |                |               |
-|             MAP-Neo             |  7B  |         58.2        |     55.1     |      33.9      |      57.5     |
-|          Qwen1.5-Chat           |  7B  |         61.5        |     68.0     |      39.3      |      68.8     |
-|         Llama3-Instruct         |  8B  |         67.1        |     51.7     |      38.4      |      50.7     |
-|               OLMo              |  7B  |         28.4        |     25.6     |      19.9      |      27.3     |
-| Open-source Models (Omni-modal) |      |                     |              |                |               |
-|              VITA               | 8x7B |        71.0*        |     46.6     |      46.2*     |     56.7*     |
-|            VITA-1.5             |  7B  |         71.0        |     75.1     |      47.9      |      65.6     |
-|          Baichuan-Omni          |  7B  |         65.3        |     72.2     |      47.7      |      68.9     |
-|          MiniCPM-o 2.6          |  8B  |         65.3        |     63.3     |      50.9      |      61.5     |
-|        Baichuan-Omni-1.5        |      |                     |              |                |               |
+### Performance Evaluation
+
+<div align="center">
+<img src="./assets/performance.png" , width=80%>
+</div>
+
+<br>
+
+<details>
+
+<summary>Click here to view the detailed results of pure text understanding ability.</summary>
+
+#### Pure text understanding ability
+<div align="center">
+    <table style="margin: 0 auto; text-align: center;">
+    <thead>
+        <tr>
+            <th class="tg-c3ow" colspan="7">Comprehensive Tasks</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Model</td>
+        <td>Size</td>
+        <td>MMLU <br> (Acc.)</td>
+        <td>CMMLU <br> (Acc.)</td>
+        <td>AGIEval <br> (Acc.)</td>
+        <td>C-Eval <br> (Acc.)</td>
+        <td>GAOKAO <br> (Acc.)</td>
+    </tr>
+    <tr>
+        <td colspan="7">Proprietary Models</td>
+    </tr>
+    <tr>
+        <td>GPT 4o</td>
+        <td>-</td>
+        <td><b>88.0♢<br></td>
+        <td><b>78.3♢<br></td>
+        <td><b>62.3♢<br></td>
+        <td><b>86.0♢<br></td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>GPT 4o mini</td>
+        <td>-</td>
+        <td>82.0</td>
+        <td>67.6</td>
+        <td>52.2</td>
+        <td>63.6</td>
+        <td>70.8</td>
+    </tr>
+    <tr>
+         <td colspan="7">Open-source Models (Pure text)</td>
+    </tr>
+    <tr>
+        <td>MAP-Neo</td>
+        <td>7B</td>
+        <td>58.2</td>
+        <td>55.1</td>
+        <td>33.9</td>
+        <td>57.5</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>Qwen1.5-Chat</td>
+        <td>7B</td>
+        <td>61.5</td>
+        <td>68.0</td>
+        <td>39.3</td>
+        <td>68.8</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>Llama3-Instruct</td>
+        <td>8B</td>
+        <td>67.1</td>
+        <td>51.7</td>
+        <td>38.4</td>
+        <td>50.7</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>OLMo</td>
+        <td>7B</td>
+        <td>28.4</td>
+        <td>25.6</td>
+        <td>19.9</td>
+        <td>27.3</td>
+        <td>-</td>
+    </tr>
+    <tr>
+         <td colspan="7">Open-source Models (Omni-modal)</td>
+    </tr>
+    <tr>
+        <td>VITA</td>
+        <td>8x7B</td>
+        <td>71.0*</td>
+        <td>46.6</td>
+        <td>46.2*</td>
+        <td>56.7*</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>VITA-1.5</td>
+        <td>7B</td>
+        <td>71.0</td>
+        <td>75.1</td>
+        <td>47.9</td>
+        <td>65.6</td>
+        <td>57.4</td>
+    </tr>
+    <tr>
+        <td>Baichuan-Omni</td>
+        <td>7B</td>
+        <td>65.3</td>
+        <td>72.2</td>
+        <td>47.7</td>
+        <td>68.9</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>MiniCPM-o 2.6</td>
+        <td>7B</td>
+        <td>65.3</td>
+        <td>63.3</td>
+        <td>50.9</td>
+        <td>61.5</td>
+        <td>56.3</td>
+    </tr>
+    <tr>
+        <td><b>Baichuan-Omni-1.5<br></td>
+        <td>7B</td>
+        <td>72.2</td>
+        <td>75.5</td>
+        <td>54.4</td>
+        <td>73.1</td>
+        <td><b>73.5<br></td>
+    </tr>
+    </tbody>
+    </table>
+</div>
+
+</details>
+
+<details>
+
+<summary>Click here to view detailed evaluation results of image understanding ability.</summary>
+
+#### Image understanding ability
+
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+    <thead>
+      <tr>
+         <th class="tg-c3ow" colspan="9">Multi-choice &amp; Yes-or-No Question</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Model</td>
+        <td>Size</td>
+        <td>MMBench-EN <br>(Acc.)</td>
+        <td>MMbench-CN <br>(Acc.)</td>
+        <td>SEED-IMG <br>(Acc.)</td>
+        <td>MMMU-val <br>(Acc.)</td>
+        <td>HallusionBench <br>(Acc.)</td>
+      </tr>
+      <tr>
+        <td colspan="9">Proprietary Models</td>
+      </tr>
+      <tr>
+        <td>GPT-4o</td>
+        <td>-</td>
+        <td>83.4♢</td>
+        <td>82.1♢</td>
+        <td>-</td>
+        <td><b>69.1♢<br></td>
+        <td><b>55.0♢<br></td>
+      </tr>
+      <tr>
+        <td>GPT-4o-mini</td>
+        <td>-</td>
+        <td>77.7</td>
+        <td>76.9</td>
+        <td>72.3</td>
+        <td>60.0♢</td>
+        <td>46.1♢</td>
+      </tr>
+      <tr>
+        <td colspan="9">Open Source Models (Vision-Language)</td>
+      </tr>
+      <tr>
+        <td>Qwen2-VL-7B</td>
+        <td>7B</td>
+        <td><b>86.4<br></td>
+        <td>81.9</td>
+        <td><b>76.5<br></td>
+        <td>52.7</td>
+        <td>50.6∗</td>
+      </tr>
+      <tr>
+        <td>MiniCPM-Llama3-V 2.5</td>
+        <td>8B</td>
+        <td>76.7</td>
+        <td>73.3</td>
+        <td>72.4</td>
+        <td>45.8∗</td>
+        <td>42.5</td>
+      </tr>
+      <tr>
+        <td colspan="9">Open Source Models (Omni-modal)</td>
+      </tr>
+      <tr>
+        <td>VITA</td>
+        <td>8x7B</td>
+        <td>74.7</td>
+        <td>71.4</td>
+        <td>72.6</td>
+        <td>45.3</td>
+        <td>39.7∗</td>
+      </tr>
+      <tr>
+        <td>VITA-1.5</td>
+        <td>7B</td>
+        <td>80.8</td>
+        <td>80.2</td>
+        <td>74.2</td>
+        <td>53.1</td>
+        <td>44.1</td>
+      </tr>
+      <tr>
+        <td>Baichuan-Omni</td>
+        <td>7B</td>
+        <td>76.2</td>
+        <td>74.9</td>
+        <td>74.1</td>
+        <td>47.3</td>
+        <td>47.8</td>
+      </tr>
+      <tr>
+        <td>MiniCPM-o 2.6</td>
+        <td>7B</td>
+        <td>83.6</td>
+        <td>81.8</td>
+        <td>75.4</td>
+        <td>51.1</td>
+        <td>50.1</td>
+      </tr>
+      <tr>
+        <td><b>Baichuan-Omni-1.5<br></td>
+        <td>7B</td>
+        <td>85.6</td>
+        <td><b>83.6<br></td>
+        <td>75.7</td>
+        <td>53.9</td>
+        <td>49.7</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
-**图像理解能力**
+<br>
 
-|             Model             | Size | MMBench-EN | MMbench-CN | M3GIA | SEED-IMG |   MME  | MMMU (val) | HallusionBench | RealWorldQA | MMVet | MathVista-mini | TextVQA (val) | ChartQA | OCRBench |
-|:-----------------------------:|:----:|:----------:|:----------:|:-----:|:--------:|:------:|:----------:|:--------------:|:-----------:|:-----:|:--------------:|:-------------:|:-------:|:--------:|
-|          Proprietary          |      |            |            |       |          |        |            |                |             |       |                |               |         |          |
-|             GPT-4o            |   -  |    83.4    |    82.1    |  59.8 |     -    | 2328.7 |    69.1    |      55.0      |     75.4    |  69.1 |      63.8      |       -       |   85.7  |   73.6   |
-|          GPT-4o-mini          |   -  |    77.7    |    76.9    |   -   |   72.3   | 2003.4 |    60.0    |      46.1      |     67.1    |  66.9 |      52.4      |     66.8      |    -    |   78.5   |
-| Open Source (Vision-Language) |      |            |            |       |          |        |            |                |             |       |                |               |         |          |
-|          Qwen2-VL-7B          |  8B  |    86.4    |    81.9    |  37.3 |   76.5   | 2326.8 |    52.7    |      50.6      |     69.7    |  62.0 |      58.2      |      84.3     |   83.0  |   84.5   |
-|     MiniCPM-Llama3-V 2.5      |  8B  |    76.7    |    73.3    |  30.3 |   72.4   | 2024.6 |    45.8    |      42.5      |     63.5    |  52.0 |      54.3      |      76.6     |   72.0  |   72.5   |
-|    Open Source (Omni-modal)   |      |            |            |       |          |        |            |                |             |       |                |               |         |          |
-|              VITA             | 8x7B |    74.7    |    71.4    |  27.7 |   72.6   | 2189.1 |    45.3    |      39.7      |     59.0    |  41.6 |      44.9      |      71.8     |   76.6  |   68.5   |
-|            VITA-1.5           |  7B  |    80.8    |    80.2    |   -   |   74.2   | 2311.0 |    53.1    |      44.1      |     66.8    |  51.1 |      66.2      |      74.2     |   79.6  |   75.2   |
-|         Baichuan-Omni         |  7B  |    76.2    |    74.9    |  34.7 |   74.1   | 2186.9 |    47.3    |      47.8      |     62.6    |  65.4 |      51.9      |      74.3     |   79.6  |   70.0   |
-|         MiniCPM-o 2.6         |  8B  |    83.6    |    81.8    |   -   |   75.4   | 2372.0 |    51.1    |      50.1      |     67.7    |  65.5 |      71.9      |      80.1     |   86.9  |   89.7   |
-|       Baichuan-Omini-1.5      |  7B  |            |            |       |          |        |            |                |             |       |                |               |         |          |
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+    <thead>
+      <tr>
+        <th class="tg-c3ow" colspan="9">Visual Question Answering</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Model</td>
+        <td>Size</td>
+        <td>RealWorldQA <br>(Acc.)</td>
+        <td>MathVista-mini <br>(Acc.)</td>
+        <td>TextVQA-val <br>(Acc.)</td>
+        <td>ChartQA <br>(Acc.)</td>
+        <td>OCRBench <br>(Acc.)</td>
+      </tr>
+      <tr>
+        <td colspan="8">Proprietary Models</td>
+      </tr>
+      <tr>
+        <td>GPT-4o</td>
+        <td>-</td>
+        <td><b>75.4♢<br></td>
+        <td>63.8♢</td>
+        <td>-</td>
+        <td>85.7♢</td>
+        <td>73.6♢</td>
+      </tr>
+      <tr>
+        <td>GPT-4o-mini</td>
+        <td>-</td>
+        <td>66.3</td>
+        <td>53.4</td>
+        <td>66.8</td>
+        <td>-</td>
+        <td>77.4</td>
+      </tr>
+      <tr>
+        <td colspan="8">Open Source Models (Vision-Language)</td>
+      </tr>
+      <tr>
+        <td>Qwen2-VL-7B</td>
+        <td>7B</td>
+        <td>69.7</td>
+        <td>58.2∗</td>
+        <td><b>84.3∗<br></td>
+        <td>83.0∗</td>
+        <td>84.5∗</td>
+      </tr>
+      <tr>
+        <td>MiniCPM-Llama3-V 2.5</td>
+        <td>8B</td>
+        <td>63.5</td>
+        <td>54.3∗</td>
+        <td>76.6</td>
+        <td>72.0</td>
+        <td>72.5</td>
+      </tr>
+      <tr>
+        <td colspan="8">Open Source Models (Omni-modal)</td>
+      </tr>
+      <tr>
+        <td>VITA</td>
+        <td>8x7B</td>
+        <td>59.0</td>
+        <td>44.9∗</td>
+        <td>71.8</td>
+        <td>76.6</td>
+        <td>68.5∗</td>
+      </tr>
+      <tr>
+        <td>VITA-1.5</td>
+        <td>7B</td>
+        <td>66.8</td>
+        <td><b>66.5<br></td>
+        <td>74.9</td>
+        <td>79.6</td>
+        <td>73.3</td>
+      </tr>
+      <tr>
+        <td>Baichuan-Omni</td>
+        <td>7B</td>
+        <td>62.6</td>
+        <td>51.9</td>
+        <td>74.3</td>
+        <td>79.6</td>
+        <td>70.0</td>
+      </tr>
+      <tr>
+        <td>MiniCPM-o 2.6</td>
+        <td>7B</td>
+        <td>67.7</td>
+        <td>64.6</td>
+        <td>80.1</td>
+        <td><b>87.6<br></td>
+        <td><b>89.7∗<br></td>
+      </tr>
+       <tr>
+        <td>Baichuan-Omni-1.5 </td>
+        <td>7B</td>
+        <td>68.8</td>
+        <td>63.6</td>
+        <td>83.2</td>
+        <td>84.9</td>
+        <td>84.0</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
-**视频理解能力**
-|                                      |      |                 |   General VQA  |                  |                 |                        |     Open-ended VQA    |                        |                |                  |
-|:------------------------------------:|:----:|:---------------:|:--------------:|:----------------:|:---------------:|:----------------------:|:---------------------:|:----------------------:|:--------------:|:----------------:|
-|                 Model                | Size |     # Frames    | MVBench (Acc.) | Egoschema (Acc.) | VideoMME (Acc.) | Perception-Test (Acc.) | ActivityNet-QA (Acc.) | ActivityNet-QA (Score) | MSVD-QA (Acc.) | MSVD-QA (Score.) |
-|          Proprietary Models          |      |                 |                |                  |                 |                        |                       |                        |                |                  |
-|            Gemini 1.5 Pro            |      |        -        |      81.3♢     |       63.2*      |      75.0♢      |            -           |         56.7*         |            -           |        -       |         -        |
-|              GPT 4o mini             |      |        -        |      55.2      |       58.5       |       65.2      |          48.2          |          59.6         |           3.0          |      75.8      |        3.7       |
-|                GPT 4o                |      |        -        |        -       |       77.2*      |      71.9♢      |            -           |         61.9*         |            -           |        -       |         -        |
-|                GPT 4V                |      |        -        |      43.7♢     |       55.6*      |      59.9♢      |            -           |         59.5*         |            -           |        -       |         -        |
-| Open-source Models (Vision-language) |      |                 |                |                  |                 |                        |                       |                        |                |                  |
-|             Qwen2-VL-7B              |  7B  | 2 fps (max 768) |  67.0* \| 64.4 |   66.7* \| 66.6  |  63.3* \| 59.0  |      62.3* \| 60.3     |       17.4\|1.9       |           1.9          |      61.1      |        3.5       |
-|                AnyGPT                |  8B  |        48       |      33.2      |       32.1       |       29.8      |          29.1          |          -\|-         |            -           |        -       |         -        |
-|             VideoLLaMA 2             |  7B  |        16       |      54.6*     |       51.7*      |      46.6*      |          51.4*         |          50.          |                        |      70.9*     |       3.8*       |
-|              VideoChat2              |  7B  |        16       |      51.1*     |       42.1♢      |      33.7♢      |          47.3♢         |         49.1*         |          3.3*          |      70.0*     |       3.9*       |
-|           LLaVA-NeXT-Video           |  7B  |        32       |      46.5♢     |       43.9♢      |      33.7♢      |          48.8♢         |         53.5*         |          3.2*          |      67.4      |        3.4       |
-|             Video-LLaVA              |  7B  |        8        |      41.0♢     |       38.4♢      |      39.9♢      |          44.3♢         |         45.3*         |          3.3*          |      70.7*     |       3.9*       |
-|    Open-source Models (Omni-modal)   |      |                 |                |                  |                 |                        |                       |                        |                |                  |
-|                 VITA                 | 8x7B |  1 fps (max 32) |      53.4      |       53.9       |       56.1      |          56.2          |          55.0         |           3.5          |      63.9      |        3.7       |
-|               VITA-1.5               |  7B  |  1 fps (max 32) |      55.5      |       54.7       |       58.6      |          57.6          |          59.6         |           3.0          |      57.6      |        3.3       |
-|            Baichuan-Omni             |  7B  |  1 fps (max 48) |      60.9      |       58.8       |       58.2      |          56.8          |          58.6         |           3.7          |      72.2      |        4.0       |
-|            MiniCPM-o 2.6             |  8B  |  1 fps (max 64) |      58.6      |       50.7       |       66.7      |          66.6          |          63.0         |           3.1          |      73.7      |        3.6       |
-|          Baichuan-Omini-1.5          |  7B  |  1 fps (max 48) |                |                  |                 |                        |                       |                        |                |                  |
+</details>
+
+<details>
+
+<summary>Click here to view detailed evaluation results of video understanding ability.</summary>
+
+#### Video understanding ability
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+    <thead>
+      <tr>
+        <th colspan="7">General VQA&nbsp;&nbsp;&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Model</td>
+        <td>Size</td>
+        <td># Frames</td>
+        <td>MVBench <br>(Acc.)</td>
+        <td>Egoschema <br>(Acc.)</td>
+        <td>VideoMME <br>(Acc.)</td>
+        <td>Perception-Test <br>(Acc.)</td>
+      </tr>
+      <tr>
+        <td colspan="7">Proprietary Models</td>
+      </tr>
+      <tr>
+        <td>Gemini 1.5 Pro</td>
+        <td>-</td>
+        <td>-</td>
+        <td><b>81.3♢<br></td>
+        <td>63.2*</td>
+        <td><b>75.0♢<br></td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>GPT 4o mini</td>
+        <td>-</td>
+        <td>-</td>
+        <td>55.2</td>
+        <td>58.5</td>
+        <td>63.6</td>
+        <td>48.2</td>
+      </tr>
+      <tr>
+        <td>GPT 4o</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><b>77.2*<br></td>
+        <td>71.9♢</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>GPT 4V</td>
+        <td>-</td>
+        <td>-</td>
+        <td>43.7♢</td>
+        <td>55.6*</td>
+        <td>59.9♢</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td colspan="7">Open-source Models (Vision-language)</td>
+      </tr>
+      <tr>
+        <td>Qwen2-VL-7B</td>
+        <td>7B</td>
+        <td>2 fps (max 768)</td>
+        <td>67.0* | 64.4</td>
+        <td>66.7* | 66.6</td>
+        <td>63.3* | 59.0</td>
+        <td>62.3* | 60.3</td>
+      </tr>
+      <tr>
+        <td>AnyGPT</td>
+        <td>8B</td>
+        <td>48</td>
+        <td>33.2</td>
+        <td>32.1</td>
+        <td>29.8</td>
+        <td>29.1</td>
+      </tr>
+      <tr>
+        <td>VideoLLaMA 2</td>
+        <td>7B</td>
+        <td>16</td>
+        <td>54.6*</td>
+        <td>51.7*</td>
+        <td>46.6*</td>
+        <td>51.4*</td>
+      </tr>
+      <tr>
+        <td>VideoChat2</td>
+        <td>7B</td>
+        <td>16</td>
+        <td>51.1*</td>
+        <td>42.1♢</td>
+        <td>33.7♢</td>
+        <td>47.3♢</td>
+      </tr>
+      <tr>
+        <td>LLaVA-NeXT-Video</td>
+        <td>7B</td>
+        <td>32</td>
+        <td>46.5♢</td>
+        <td>43.9♢</td>
+        <td>33.7♢</td>
+        <td>48.8♢</td>
+      </tr>
+      <tr>
+        <td>Video-LLaVA</td>
+        <td>7B</td>
+        <td>8</td>
+        <td>41.0♢</td>
+        <td>38.4♢</td>
+        <td>39.9♢</td>
+        <td>44.3♢</td>
+      </tr>
+      <tr>
+        <td colspan="7">Open-source Models (Omni-modal)</td>
+      </tr>
+      <tr>
+        <td>VITA</td>
+        <td>8x7B</td>
+        <td>1 fps (max 32)</td>
+        <td>53.4</td>
+        <td>53.9</td>
+        <td>56.1</td>
+        <td>56.2</td>
+      </tr>
+      <tr>
+        <td>VITA-1.5</td>
+        <td>7B</td>
+        <td>1 fps (max 32)</td>
+        <td>55.5</td>
+        <td>54.7</td>
+        <td>57.3</td>
+        <td>57.6</td>
+      </tr>
+      <tr>
+        <td>Baichuan-Omni</td>
+        <td>7B</td>
+        <td>1 fps (max 32)</td>
+        <td>60.9</td>
+        <td>58.8</td>
+        <td>58.2</td>
+        <td>56.8</td>
+      </tr>
+      <tr>
+        <td>MiniCPM-o 2.6</td>
+        <td>7B</td>
+        <td>1 fps (max 64)</td>
+        <td>58.6</td>
+        <td>50.7</td>
+        <td>63.4</td>
+        <td>66.6</td>
+      </tr>
+      <tr>
+        <td>Baichuan-Omini-1.5</td>
+        <td>7B</td>
+        <td>1 fps (max 32)</td>
+        <td> 63.7 </td>
+        <td> 62.4 </td>
+        <td> 60.1 </td>
+        <td> <b>68.9 <br> </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
-**语音理解能力**
+<br>
 
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+    <thead>
+    <tr>
+      <th colspan="7">Open-ended VQA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">Model</td>
+      <td rowspan="2">Size</td>
+      <td rowspan="2"># Frames</td>
+      <td colspan="2">ActivityNet-QA</td>
+      <td colspan="2">MSVD-QA</td>
+    </tr>
+    <tr>
+      <td>(Acc.)</td>
+      <td>(Score)</td>
+      <td>(Acc.)</td>
+      <td>(Score)</td>
+    </tr>
+    <tr>
+      <td colspan="7">Proprietary Models</td>
+    </tr>
+    <tr>
+      <td>Gemini 1.5 Pro</td>
+      <td>-</td>
+      <td>-</td>
+      <td>56.7*</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>GPT 4o mini</td>
+      <td>-</td>
+      <td>1 fps (max 32)</td>
+      <td>62.1</td>
+      <td>3.1</td>
+      <td>67.5</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <td>GPT 4o</td>
+      <td>-</td>
+      <td>-</td>
+      <td>61.9*</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>GPT 4V</td>
+      <td>-</td>
+      <td>-</td>
+      <td>59.5*</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td colspan="7">Open-source Models (Vision-language)</td>
+    </tr>
+    <tr>
+      <td>Qwen2 VL</td>
+      <td>7B</td>
+      <td>2 fps (max 768)</td>
+      <td>17.4</td>
+      <td>1.9</td>
+      <td>61.1</td>
+      <td>3.5</td>
+    </tr>
+    <tr>
+      <td>VideoLLaMA 2</td>
+      <td>7B</td>
+      <td>16</td>
+      <td>50.2*</td>
+      <td>3.3*</td>
+      <td>70.9*</td>
+      <td>3.8*</td>
+    </tr>
+    <tr>
+      <td>VideoChat2</td>
+      <td>7B</td>
+      <td>16</td>
+      <td>49.1*</td>
+      <td>3.3*</td>
+      <td>70.0*</td>
+      <td>3.9*</td>
+    </tr>
+    <tr>
+      <td>LLaVA-NeXT-Video</td>
+      <td>7B</td>
+      <td>32</td>
+      <td>53.5*</td>
+      <td>3.2*</td>
+      <td>67.4</td>
+      <td>3.4</td>
+    </tr>
+    <tr>
+      <td>Video-LLaVA</td>
+      <td>7B</td>
+      <td>8</td>
+      <td>45.3*</td>
+      <td>3.3*</td>
+      <td>70.7*</td>
+      <td>3.9*</td>
+    </tr>
+    <tr>
+      <td colspan="7">Open-source Models (Omni-modal)</td>
+    </tr>
+    <tr>
+      <td>VITA</td>
+      <td>8x7B</td>
+      <td>1 fps (max 32)</td>
+      <td>55.0</td>
+      <td>3.5</td>
+      <td>63.9</td>
+      <td>3.7</td>
+    </tr>
+    <tr>
+      <td>VITA-1.5</td>
+      <td>7B</td>
+      <td>1 fps (max 32)</td>
+      <td>59.6</td>
+      <td>3.0</td>
+      <td>67.6</td>
+      <td>3.3</td>
+    </tr>
+    <tr>
+      <td>Baichuan-Omni</td>
+      <td>7B</td>
+      <td>1 fps (max 48)</td>
+      <td>58.6</td>
+      <td><b>3.7<br></td>
+      <td>72.2</td>
+      <td> <b>4.0<br> </td>
+    </tr>
+    <tr>
+      <td>MiniCPM-o 2.6</td>
+      <td>7B</td>
+      <td>1 fps (max 64)</td>
+      <td><b>63.0<br></td>
+      <td>3.1</td>
+      <td>73.7</td>
+      <td>3.6</td>
+    </tr>
+    <tr>
+      <td>Baichuan-Omni-1.5</td>
+      <td>7B</td>
+      <td>1 fps (max 48)</td>
+      <td>  62.0</td>
+      <td> 3.1</td>
+      <td> <b> 74.2 <br></td>
+      <td> 3.6</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
+</details>
 
-**语音生成能力**
+<details>
 
+<summary>Click here to view detailed evaluation results of audio understanding and generation ability.</summary>
 
+#### Audio understanding and generation ability
 
-**全模态理解能力**
-|              Model              | Size | Image & Audio | Image Caption & Audio | Image & Audio Transcript | Image Caption & Audio Transcript |
-|:-------------------------------:|:----:|:-------------:|:---------------------:|:------------------------:|:--------------------------------:|
-|        Proprietary Models       |      |               |                       |                          |                                  |
-|            GPT4o-mini           |      |       -       |           -           |           37.0           |               37.7               |
-| Open-source Models (Omni-modal) |      |               |                       |                          |                                  |
-|            VITA-1.0             |  7B  |      33.1     |          31.8         |           42.0           |               44.2               |
-|            VITA-1.5             |  7B  |      33.4     |          29.6         |           48.5           |               47.2               |
-|          Baichuan-Omni          |  7B  |      32.2     |          26.5         |           42.6           |               44.2               |
-|          MiniCPM-o 2.6          |  8B  |      40.5     |          30.8         |           53.2           |               46.3               |
-|        Baichuan-Omni-1.5        |  7B  |      42.9     |          37.7         |           47.9           |               46.9               |
+</details>
 
+<details>
 
-**医疗图像理解能力**
-|              Model              | Size | GMAI-MMB-VAL | BC-MED-MQA |
-|:-------------------------------:|:----:|:------------:|:----------:|
-|        Proprietary Models       |      |              |            |
-|            GPT4o-mini           |   -  |     46.7     |    67.5    |
-| Open-source Models (Omni-modal) |      |              |            |
-|            VITA-1.5             |  7B  |     36.7     |    56.7    |
-|          MiniCPM-o 2.6          |  8B  |     41.5     |    71.8    |
-|        Baichuan-Omni-1.5        |  7B  |              |            |
+<summary>Click here to view the detailed evaluation results of omni-modal understanding ability.</summary>
 
-### 典型示例
+#### Omni-modal understanding ability
 
-### 本地 WebUI Demo
-#### 音频Demo
-#### 视频Demo
-#### 图像Demo
-### 微调
-coming soon
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+    <thead>
+      <tr>
+        <th colspan="7">Omni-Undesratnding </th>
+      </tr>
+    <thead>
+    <tbody>
+          <tr>
+          <td>Model</td>
+          <td>Size</td>
+          <td>Image & <br> Audio (Acc.)</td>
+          <td>Image Caption & <br> Audio (Acc.)</td>
+          <td>Image & Audio <br> Transcript (Acc.)</td>
+          <td>Image Caption & <br> Audio Transcript (Acc.)</td>
+          </tr>
+      </thead>
+      <tr>
+        <td colspan="6">Proprietary Models</td>
+      </tr>
+      <tr>
+        <td>GPT4o-mini</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>37.0</td>
+        <td>37.7</td>
+      </tr>
+      <tr>
+        <td colspan="6">Open-source Models (Omni-modal)</td>
+      </tr>
+      <tr>
+        <td>VITA</td>
+        <td>8x7B</td>
+        <td>33.1</td>
+        <td>31.8</td>
+        <td>42.0</td>
+        <td>44.2</td>
+      </tr>
+      <tr>
+        <td>VITA-1.5</td>
+        <td>7B</td>
+        <td>33.4</td>
+        <td>29.6</td>
+        <td>48.5</td>
+        <td><b>47.2<br></td>
+      </tr>
+      <tr>
+        <td>Baichuan-Omni</td>
+        <td>7B</td>
+        <td>32.2</td>
+        <td>26.5</td>
+        <td>42.6</td>
+        <td>44.2</td>
+      </tr>
+      <tr>
+        <td>MiniCPM-o 2.6</td>
+        <td>7B</td>
+        <td>40.5</td>
+        <td>30.8</td>
+        <td><b>53.2<br></td>
+        <td>46.3</td>
+      </tr>
+      <tr>
+        <td><b>Baichuan-Omni-1.5<br></td>
+        <td>7B</td>
+        <td><b>42.9<br></td>
+        <td><b>37.7<br></td>
+        <td>47.9</td>
+        <td>46.9</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-### 开源评测集
+</details>
+
+<details>
+
+<summary>Click here to view detailed evaluation results of medical image understanding ability.</summary>
+
+#### Medical image understanding ability
+
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+    <thead>
+        <tr>
+          <th colspan="7">Medical Understanding&nbsp;&nbsp;&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+          <td>Model</td>
+          <td>Size</td>
+          <td>GMAI-MMB-VAL <br> (Acc.)</td>
+          <td>OpenMM-Medical <br> (Acc.)</td>
+          </tr>
+      </thead>
+      <tr>
+        <td colspan="4">Proprietary Models</td>
+      </tr>
+      <tr>
+        <td>GPT4o-mini</td>
+        <td>-</td>
+        <td>46.4</td>
+        <td>74.3</td>
+      </tr>
+      <tr>
+        <td colspan="4">Open-source Models (Vision-Language)</td>
+      </tr>
+      <tr>
+        <td>Qwen2 VL</td>
+        <td>7B</td>
+        <td>46.3</td>
+        <td>76.9</td>
+      </tr>
+      <tr>
+        <td>Qwen2 VL</td>
+        <td>72B</td>
+        <td><b>50.7<br></td>
+        <td>80.7</td>
+      </tr>
+      <tr>
+        <td colspan="4">Open-source Models (Omni-modal)</td>
+      </tr>
+      <tr>
+        <td>VITA-1.5</td>
+        <td>7B</td>
+        <td>36.7</td>
+        <td>67.1</td>
+      </tr>
+      <tr>
+        <td>MiniCPM-o 2.6</td>
+        <td>7B</td>
+        <td>41.5</td>
+        <td>73.6</td>
+      </tr>
+      <tr>
+        <td><b>Baichuan-Omni-1.5<br></td>
+        <td>7B</td>
+        <td>49.9</td>
+        <td><b>83.8<br></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</details>
+
+### Typical Examples
+<br>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <img src="./assets/pipeline.png" alt="pipeline" style="margin-bottom: 5px;">
+  <img src="./assets/math.png" alt="math" style="margin-bottom: 5px;">
+  <img src="./assets/fly_bill.png" alt="fly_bill" style="margin-bottom: 5px;">
+</div>
+
+### Local WebUI Demo
+
+#### Preparation
+
+##### Creating a Virtual Environment
+```bash
+conda create -n baichuan_omni python==3.10
+conda activate baichuan_omni
+pip install -r baichuan_omni_requirements.txt
+```
+##### Download the model and modify the model path
+Modify MODEL_PATH in web_demo/constants.py to the local model path
+
+#### Image Demo
+
+```bash
+cd web_demo
+python vision_s2s_gradio_demo_cosy_multiturn.py
+```
+
+#### Audio Demo
+
+```bash
+cd web_demo
+python s2s_gradio_demo_cosy_multiturn.py
+```
+
+#### Video Demo
+
+```bash
+cd web_demo
+python video_s2s_gradio_demo_cosy_singleturn.py
+```
+
+### Fine-tuning
+Coming soon
+
+### Open-source Evaluation Datasets
+
 **OpenMM-Medical**
 
-为了更全面的评估模型医疗多模态能力，我们构建了OpenMM-Medical，包含来自 42 个公开的医学图像数据集，例如 ACRIMA（眼底图像）、BioMediTech（显微镜图像）和 CoronaHack（X 射线），总共包含 88,996 张图像。
+To comprehensively evaluate the model's multi-modal medical capabilities, we have constructed OpenMM-Medical, which includes data from 42 publicly available medical image datasets such as ACRIMA (retinal images), BioMediTech (microscope images), and CoronaHack (X-rays), totaling 88,996 images.
 
 **OpenAudioBench**
 
-为了更高效的评估模型的“智商”问题，我们构建了OpenAudioBench，共包含5个音频端到端理解子评测集，分别是4个公开评测集（llama question、WEB QA、TriviaQA、AlpacaEval），以及百川团队自建的语音逻辑推理评测集，共2701条数据，能够综合反映模型“智商”水平。
+To efficiently assess the model's "IQ" issues, we developed OpenAudioBench, comprising five end-to-end audio understanding sub-datasets: four public benchmarks (Llama Question, WEB QA, TriviaQA, AlpacaEval), and an internally created speech logical reasoning dataset by the Baichuan team, totaling 2,701 entries. This suite reflects the model's comprehensive "IQ" level.
 
-### 致谢
+### Acknowledgments
 
-- 视觉编码器架构：【NaVit】(https://arxiv.org/abs/2307.06304v1)
-- 自动语音识别（ASR, Automatic Speech Recognition）模型：【Whisper】(https://github.com/openai/whisper)
-- 大语言模型（LLM）：【Qwen2.5 7B】(https://arxiv.org/abs/2412.15115)
+- **Visual Encoder Architecture**: [NaVit](https://arxiv.org/abs/2307.06304v1)
+- **Automatic Speech Recognition (ASR) Model**: [Whisper](https://github.com/openai/whisper)
+- **Large Language Model (LLM)**: [Qwen2.5 7B](https://arxiv.org/abs/2412.15115)
+- **Visual Encoder Weight Initialization**: Based on Qwen2-VL-7B ([Link](https://arxiv.org/abs/2409.12191))
+- **Some Code Contributions**: From CosyVoice and Matcha-TTS ([CosyVoice GitHub](https://github.com/FunAudioLLM/CosyVoice), [Matcha-TTS GitHub](https://github.com/shivammehta25/Matcha-TTS/))
+- **HiFi-GAN Vocoder Used in CosyVoice 2.0**: ([CosyVoice 2.0](https://funaudiollm.github.io/cosyvoice2/))
 
-### 声明
-我们强烈呼吁所有使用者，不要利用 Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 模型进行任何危害国家社会安全或违法的活动。另外，我们也要求使用者不要将 Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 模型用于未经适当安全审查和备案的互联网服务。我们希望所有的使用者都能遵守这个原则，确保科技的发展能在规范和合法的环境下进行。
-我们已经尽我们所能，来确保模型训练过程中使用的数据的合规性。然而，尽管我们已经做出了巨大的努力，但由于模型和数据的复杂性，仍有可能存在一些无法预见的问题。因此，如果由于使用 Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 开源模型而导致的任何问题，包括但不限于数据安全问题、公共舆论风险，或模型被误导、滥用、传播或不当利用所带来的任何风险和问题，我们将不承担任何责任。
-### 协议
-社区使用  Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 模型需要遵循 Apache 2.0 和《Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 模型社区许可协议》。Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 模型支持商业用途，如果您计划将  Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 模型或其衍生品用于商业目的，请您确认您的主体符合以下情况：
-您或您的关联方的服务或产品的日均用户活跃量（DAU）低于100万。
-您或您的关联方不是软件服务提供商、云服务提供商。
-您或您的关联方不存在将授予您的商用许可，未经百川许可二次授权给其他第三方的可能。
-在符合以上条件的前提下，您需要通过以下联系邮箱 opensource.contact@baichuan-inc.com，提交《Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 模型社区许可协议》要求的申请材料。审核通过后，百川将特此授予您一个非排他性、全球性、不可转让、不可再许可、可撤销的商用版权许可。
-### 引用
-如需引用我们的工作，请使用如下 reference:
+### Disclaimer
+
+We strongly urge all users not to employ the Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base models for any activities that may endanger national or social security or engage in illegal activities. Additionally, we request that these models not be used in internet services without proper safety reviews and registrations. We hope all users adhere to these guidelines to ensure technological development proceeds within a regulated and legal framework.
+
+We have made every effort to ensure the compliance of the data used during the training process. However, despite our extensive efforts, due to the complexity of models and data, unforeseen issues may still arise. Therefore, we will not be held responsible for any problems arising from the use of the Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base open-source models, including but not limited to data security issues, public opinion risks, or risks associated with misleading, misuse, dissemination, or improper utilization of the models.
+
+### License
+
+Community use of the Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base models must comply with the Apache 2.0 license and the "Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base Community License Agreement." These models support commercial use. If you plan to use the Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base models or their derivatives for commercial purposes, please confirm that your entity meets the following criteria:
+- Your or your affiliated party's daily active user count (DAU) is below 1 million.
+- You or your affiliated party are not software service providers or cloud service providers.
+- There is no possibility of re-granting the commercial license to third parties without prior approval from Baichuan Inc.
+
+Under these conditions, you need to submit the required application materials for the "Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base Community License Agreement" via email at opensource.contact@baichuan-inc.com. Upon approval, Baichuan Inc. will grant you a non-exclusive, global, non-transferable, non-sublicensable, and revocable commercial license.
+
+### Citation
+
+If you wish to cite our work, please use the following reference:
 @article{
 }
