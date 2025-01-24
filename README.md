@@ -782,7 +782,116 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 <summary>Click here to view detailed evaluation results of audio understanding and generation ability.</summary>
 
 #### Audio understanding and generation ability
-
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+  <thead>
+    <tr>
+      <th colspan="12">Audio Comprehensive Capacity</th>
+    </tr></thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">Model</td>
+      <td rowspan="2">Size</td>
+      <td colspan="2">ReasoningQA</td>
+      <td colspan="2">LlamaQuestions</td>
+      <td colspan="2">WebQuestion</td>
+      <td colspan="2">TriviaQA</td>
+      <td colspan="2">AlpacaEval</td>
+    </tr>
+    <tr>
+      <td>s → t</td>
+      <td>s → s</td>
+      <td>s → t</td>
+      <td>s →s</td>
+      <td>s → t</td>
+      <td>s →s</td>
+      <td>s → t</td>
+      <td>s →s</td>
+      <td>s→t</td>
+      <td>s →s</td>
+    </tr>
+    <tr>
+      <td colspan="12">Proprietary Models</td>
+    </tr>
+    <tr>
+      <td>GPT-4o-Audio</td>
+      <td>-</td>
+      <td><b>55.6</td>
+      <td>-</td>
+      <td><b>88.4</td>
+      <td>-</td>
+      <td><b>8.10</td>
+      <td>-</td>
+      <td><b>9.06</td>
+      <td>-</td>
+      <td><b>8.01</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td colspan="12">Open-source Models (Pure Audio)</td>
+    </tr>
+    <tr>
+      <td>GLM-4-Voice</td>
+      <td>9B</td>
+      <td>-</td>
+      <td>26.5</td>
+      <td>-</td>
+      <td>71.0</td>
+      <td>-</td>
+      <td>5.15</td>
+      <td>-</td>
+      <td>4.66</td>
+      <td>-</td>
+      <td>4.89</td>
+    </tr>
+    <tr>
+      <td colspan="12">Open-source Models (Omni-modal)</td>
+    </tr>
+    <tr>
+      <td>VITA-1.5</td>
+      <td>7B</td>
+      <td>41.0</td>
+      <td>-</td>
+      <td>74.2</td>
+      <td>-</td>
+      <td>5.73</td>
+      <td>-</td>
+      <td>4.68</td>
+      <td>-</td>
+      <td>6.82</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>MiniCPM-o 2.6</td>
+      <td>7B</td>
+      <td>38.6</td>
+      <td>-</td>
+      <td>77.8</td>
+      <td>-</td>
+      <td>6.86</td>
+      <td>-</td>
+      <td>6.19</td>
+      <td>-</td>
+      <td>5.18</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><b>Baichuan-Omni-1.5</td>
+      <td>7B</td>
+      <td>50.0</td>
+      <td><b>40.9</td>
+      <td>78.5</td>
+      <td><b>75.3</td>
+      <td>5.91</td>
+      <td><b>5.52</td>
+      <td>5.72</td>
+      <td>5.31</td>
+      <td>7.79</td>
+      <td><b>6.94</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
 </details>
 
 <details>

@@ -23,19 +23,31 @@
 
 ## 📖 目录
 
-- [🏁 Baichuan-Omni-1.5](#baichuan-omni-1.5)
-- [🧠 多阶段全模态的训练框架](#多阶段全模态的训练框架)
-- [📊 性能评估](#性能评估)
-- [🍰 典型示例](#典型示例)
-- [🚀 本地 WebUI Demo](#本地-WebUI-Demo)
-  - [图像Demo](#图像demo)
-  - [视频Demo](#视频demo)
-  - [音频Demo](#音频demo)
-- [⚙️ 微调](#微调)
-- [📣 致谢](#致谢)
-- [⚠️ 声明](#声明)
-- [📜 协议](#协议)
-- [📜 引用](#引用)
+- [**开源全模态基座，支持文本、图像、视频、音频输入以及文本、音频输出的全模态大模型**](#开源全模态基座支持文本图像视频音频输入以及文本音频输出的全模态大模型)
+- [📖 目录](#-目录)
+- [Baichuan-Omni-1.5](#baichuan-omni-15)
+  - [多阶段全模态的训练框架](#多阶段全模态的训练框架)
+  - [性能评估](#性能评估)
+    - [纯文本理解能力](#纯文本理解能力)
+    - [图像理解能力](#图像理解能力)
+    - [视频理解能力](#视频理解能力)
+    - [语音理解与生成综合能力](#语音理解与生成综合能力)
+    - [全模态理解能力](#全模态理解能力)
+    - [医疗图像理解能力](#医疗图像理解能力)
+  - [典型示例](#典型示例)
+  - [本地 WebUI Demo](#本地-webui-demo)
+    - [准备工作](#准备工作)
+      - [创建虚拟环境](#创建虚拟环境)
+      - [下载模型并修改模型路径](#下载模型并修改模型路径)
+    - [图像Demo](#图像demo)
+    - [音频Demo](#音频demo)
+    - [视频Demo](#视频demo)
+  - [微调](#微调)
+  - [开源评测集](#开源评测集)
+  - [致谢](#致谢)
+  - [声明](#声明)
+  - [协议](#协议)
+  - [引用](#引用)
 
 ## Baichuan-Omni-1.5
 
@@ -784,17 +796,120 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 
 <details>
 
-<summary>点击查看语音理解能力详细评测结果。</summary>
+<summary>点击查看语音理解与生成能力详细评测结果。</summary>
 
-#### 语音理解能力
+#### 语音理解与生成综合能力
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+  <thead>
+    <tr>
+      <th colspan="12">Audio Comprehensive Capacity</th>
+    </tr></thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">Model</td>
+      <td rowspan="2">Size</td>
+      <td colspan="2">ReasoningQA</td>
+      <td colspan="2">LlamaQuestions</td>
+      <td colspan="2">WebQuestion</td>
+      <td colspan="2">TriviaQA</td>
+      <td colspan="2">AlpacaEval</td>
+    </tr>
+    <tr>
+      <td>s → t</td>
+      <td>s → s</td>
+      <td>s → t</td>
+      <td>s →s</td>
+      <td>s → t</td>
+      <td>s →s</td>
+      <td>s → t</td>
+      <td>s →s</td>
+      <td>s→t</td>
+      <td>s →s</td>
+    </tr>
+    <tr>
+      <td colspan="12">Proprietary Models</td>
+    </tr>
+    <tr>
+      <td>GPT-4o-Audio</td>
+      <td>-</td>
+      <td><b>55.6</td>
+      <td>-</td>
+      <td><b>88.4</td>
+      <td>-</td>
+      <td><b>8.10</td>
+      <td>-</td>
+      <td><b>9.06</td>
+      <td>-</td>
+      <td><b>8.01</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td colspan="12">Open-source Models (Pure Audio)</td>
+    </tr>
+    <tr>
+      <td>GLM-4-Voice</td>
+      <td>9B</td>
+      <td>-</td>
+      <td>26.5</td>
+      <td>-</td>
+      <td>71.0</td>
+      <td>-</td>
+      <td>5.15</td>
+      <td>-</td>
+      <td>4.66</td>
+      <td>-</td>
+      <td>4.89</td>
+    </tr>
+    <tr>
+      <td colspan="12">Open-source Models (Omni-modal)</td>
+    </tr>
+    <tr>
+      <td>VITA-1.5</td>
+      <td>7B</td>
+      <td>41.0</td>
+      <td>-</td>
+      <td>74.2</td>
+      <td>-</td>
+      <td>5.73</td>
+      <td>-</td>
+      <td>4.68</td>
+      <td>-</td>
+      <td>6.82</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>MiniCPM-o 2.6</td>
+      <td>7B</td>
+      <td>38.6</td>
+      <td>-</td>
+      <td>77.8</td>
+      <td>-</td>
+      <td>6.86</td>
+      <td>-</td>
+      <td>6.19</td>
+      <td>-</td>
+      <td>5.18</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><b>Baichuan-Omni-1.5</td>
+      <td>7B</td>
+      <td>50.0</td>
+      <td><b>40.9</td>
+      <td>78.5</td>
+      <td><b>75.3</td>
+      <td>5.91</td>
+      <td><b>5.52</td>
+      <td>5.72</td>
+      <td>5.31</td>
+      <td>7.79</td>
+      <td><b>6.94</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
 
-</details>
-
-<details>
-
-<summary>点击查看语音生成能力详细评测结果。</summary>
-
-#### 语音生成能力
 
 </details>
 
