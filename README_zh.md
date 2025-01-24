@@ -54,11 +54,11 @@ Baichuan-Omni-1.5 接受图像、视频、文本、音频作为输入，并生�
 - **优秀的视觉能力。**
 Baichuan-Omni-1.5 在 OpenCompass 榜单上（综合 xxx 个主流多模态评测基准）平均得分 xxx，**在7B量级的大小下，在单图理解方面超越了 GPT-4o-mini、Gemini 1.5 Pro 和 Claude 3.5 Sonnet 等主流商用闭源多模态大模型**。此外，它的视频理解表现也**优于 GPT-4V 和 Claude 3.5 Sonnet**以及开源的全模态模型。
 
-- **领先的医疗图像理解能力。**
-Baichuan-Omni-1.5 在GMAI-MMBench以及Openmm-Medical上取得了最佳的表现。仅使用7B的LLM，均分超过Qwen2-VL-72b 3%，即 80.01% v.s 83.3%。
-
 - **出色的语音能力。**
 Baichuan-Omni-1.5 **支持高质量可控制声音的中英双语实时对话**。Baichuan-Omni-1.5 在语音理解任务（如 ASR 和 STT 等）**优于 GPT-4o-realtime**，并在语音对话的语义和声学评估中展现了**开源模型中最高的语音生成性能**。它还支持情绪/语速/风格控制、语音克隆、角色扮演等进阶能力。
+
+- **领先的医疗图像理解能力。**
+Baichuan-Omni-1.5 在GMAI-MMBench以及Openmm-Medical上取得了最佳的表现。仅使用7B的LLM，均分超过Qwen2-VL-72b 3%，即 80.01% v.s 83.3%。
 
 - **强大的真实世界理解能力及其他功能。**
 Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力，其可以处理任意长宽比的图像，像素数可达 180 万（如 1344x1344）。在 RealWorldQA 上取得68.8分的成绩，**超过 GPT-4o-mini** 等商用闭源模型以及最近开源的全模态模型。在MMBench上的英文/中文评测子集分别取得85.4/85.0的高分，该表现也处于同级别模型中的第一梯队。
