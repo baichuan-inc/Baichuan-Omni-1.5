@@ -4,8 +4,8 @@
 
 ## **Open-source Omni-modal Foundation Model Supporting Text, Image, Video, and Audio Inputs as Well as Text and Audio Outputs**
 
-<strong>中文 | 
-[English](./README.md)</strong>
+<strong>English | 
+[中文](./README_zh.md)</strong>
 
 <p align="center">
 Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> <a href="xxxx">🤖</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5-Base">🤗</a> | Technical Report <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medical">📖</a>
