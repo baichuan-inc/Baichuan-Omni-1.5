@@ -257,6 +257,7 @@ coming soon
 - 视觉编码器架构：【NaVit】(https://arxiv.org/abs/2307.06304v1)
 - 自动语音识别（ASR, Automatic Speech Recognition）模型：【Whisper】(https://github.com/openai/whisper)
 - 大语言模型（LLM）：【Qwen2.5 7B】(https://arxiv.org/abs/2412.15115)
+- 视觉编码器的权重初始化于Qwen2-VL-7B：（https://arxiv.org/abs/2409.12191）
 - 部分代码来自：CosyVoice和Matcha-TTS：(https://github.com/FunAudioLLM/CosyVoice, https://github.com/shivammehta25/Matcha-TTS/)
 - 使用CosyVoice 2.0中的HiFi-GAN vocoder：(https://funaudiollm.github.io/cosyvoice2/)
 
