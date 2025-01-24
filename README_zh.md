@@ -809,9 +809,9 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
     <tr>
       <td rowspan="2">Model</td>
       <td rowspan="2">Size</td>
-      <td colspan="2">ReasoningQA</td>
-      <td colspan="2">LlamaQuestions</td>
-      <td colspan="2">WebQuestion</td>
+      <td colspan="2">Reasoning QA</td>
+      <td colspan="2">Llama Questions</td>
+      <td colspan="2">Web Questions</td>
       <td colspan="2">TriviaQA</td>
       <td colspan="2">AlpacaEval</td>
     </tr>
