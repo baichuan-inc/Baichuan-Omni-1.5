@@ -101,11 +101,11 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
     <tr>
         <td>Model</td>
         <td>Size</td>
-        <td>MMLU (Acc.)</td>
-        <td>CMMLU (Acc.)</td>
-        <td>AGIEval (Acc.)</td>
-        <td>C-Eval (Acc.)</td>
-        <td>GAOKAO (Acc.)</td>
+        <td>MMLU <br> (Acc.)</td>
+        <td>CMMLU <br> (Acc.)</td>
+        <td>AGIEval <br> (Acc.)</td>
+        <td>C-Eval <br> (Acc.)</td>
+        <td>GAOKAO <br> (Acc.)</td>
     </tr>
     <tr>
         <td colspan="7">Proprietary Models</td>
@@ -237,11 +237,11 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
       <tr>
         <td>Model</td>
         <td>Size</td>
-        <td>MMBench-EN (Acc.)</td>
-        <td>MMbench-CN (Acc.)</td>
-        <td>SEED-IMG (Acc.)</td>
-        <td>MMMU-val (Acc.)</td>
-        <td>HallusionBench (Acc.)</td>
+        <td>MMBench-EN <br>(Acc.)</td>
+        <td>MMbench-CN <br>(Acc.)</td>
+        <td>SEED-IMG <br>(Acc.)</td>
+        <td>MMMU-val <br>(Acc.)</td>
+        <td>HallusionBench <br>(Acc.)</td>
       </tr>
       <tr>
         <td colspan="9">Proprietary Models</td>
@@ -351,11 +351,11 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
       <tr>
         <td>Model</td>
         <td>Size</td>
-        <td>RealWorldQA (Acc.)</td>
-        <td>MathVista-mini (Acc.)</td>
-        <td>TextVQA-val (Acc.)</td>
-        <td>ChartQA (Acc.)</td>
-        <td>OCRBench (Acc.)</td>
+        <td>RealWorldQA <br>(Acc.)</td>
+        <td>MathVista-mini <br>(Acc.)</td>
+        <td>TextVQA-val <br>(Acc.)</td>
+        <td>ChartQA <br>(Acc.)</td>
+        <td>OCRBench <br>(Acc.)</td>
       </tr>
       <tr>
         <td colspan="8">Proprietary Models</td>
@@ -471,10 +471,10 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
         <td>Model</td>
         <td>Size</td>
         <td># Frames</td>
-        <td>MVBench (Acc.)</td>
-        <td>Egoschema (Acc.)</td>
-        <td>VideoMME (Acc.)</td>
-        <td>Perception-Test (Acc.)</td>
+        <td>MVBench <br>(Acc.)</td>
+        <td>Egoschema <br>(Acc.)</td>
+        <td>VideoMME <br>(Acc.)</td>
+        <td>Perception-Test <br>(Acc.)</td>
       </tr>
       <tr>
         <td colspan="7">Proprietary Models</td>
@@ -822,10 +822,10 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
           <tr>
           <td>Model</td>
           <td>Size</td>
-          <td>Image & Audio</td>
-          <td>Image Caption & Audio</td>
-          <td>Image & Audio Transcript</td>
-          <td>Image Caption & Audio Transcript</td>
+          <td>Image & <br> Audio (Acc.)</td>
+          <td>Image Caption & <br> Audio (Acc.)</td>
+          <td>Image & <br> Audio Transcript (Acc.)</td>
+          <td>Image Caption & <br> Audio Transcript (Acc.)</td>
           </tr>
       </thead>
       <tr>
@@ -905,8 +905,8 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
           <tr>
           <td>Model</td>
           <td>Size</td>
-          <td>GMAI-MMB-VAL (Acc.)</td>
-          <td>OpenMM-Medical (Acc.)</td>
+          <td>GMAI-MMB-VAL <br> (Acc.)</td>
+          <td>OpenMM-Medical <br> (Acc.)</td>
           </tr>
       </thead>
       <tr>
