@@ -824,7 +824,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
           <td>Size</td>
           <td>Image & <br> Audio (Acc.)</td>
           <td>Image Caption & <br> Audio (Acc.)</td>
-          <td>Image & <br> Audio Transcript (Acc.)</td>
+          <td>Image & Audio <br> Transcript (Acc.)</td>
           <td>Image Caption & <br> Audio Transcript (Acc.)</td>
           </tr>
       </thead>
