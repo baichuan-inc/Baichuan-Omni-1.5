@@ -459,8 +459,8 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 <summary>点击查看视频理解能力详细评测结果。</summary>
 
 #### 视频理解能力
-<div style="text-align: center;">
-  <table style="margin: 0 auto; border-collapse: collapse; text-align: center;">
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
     <thead>
       <tr>
         <th colspan="7">General VQA&nbsp;&nbsp;&nbsp;</th>
@@ -627,9 +627,9 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 
 <br>
 
-<div style="text-align: center;">
-  <table style="margin: 0 auto; border-collapse: collapse; text-align: center;">
-  <thead>
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+    <thead>
     <tr>
       <th colspan="7">Open-ended VQA</th>
     </tr>
@@ -811,8 +811,8 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 
 #### 全模态理解能力
 
-<div style="text-align: center;">
-  <table style="margin: 0 auto; border-collapse: collapse; text-align: center;">
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
     <thead>
       <tr>
         <th colspan="7">Omni-Undesratnding </th>
@@ -894,9 +894,9 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 
 #### 医疗图像理解能力
 
-<div style="text-align: center;">
-  <table style="margin: 0 auto; border-collapse: collapse; text-align: center;">
-      <thead>
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+    <thead>
         <tr>
           <th colspan="7">Medical Understanding&nbsp;&nbsp;&nbsp;</th>
         </tr>
