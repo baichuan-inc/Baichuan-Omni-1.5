@@ -212,37 +212,17 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 </details>
 
 ### 典型示例
+<br>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <img src="./assets/pipeline.png" alt="pipeline" style="margin-bottom: 5px;">
+  <img src="./assets/math.png" alt="math" style="margin-bottom: 5px;">
+  <img src="./assets/fly_bill.png" alt="fly_bill" style="margin-bottom: 5px;">
+</div>
 
 ### 本地 WebUI Demo
 
 #### 图像Demo
-<div style="display: flex; flex-wrap: wrap;">
-
-  <div style="flex: 45%; padding: 10px;">
-    <img src="./assets/case_pipeline_0.png" alt="Image 1" style="width:45%; height:auto;">
-  </div>
-  
-  <div style="flex: 45%; padding: 10px;">
-    <img src="./assets/case_pipeline_1.png" alt="Image 2" style="width:45%; height:auto;">
-  </div>
-
-  <div style="flex: 65%; padding: 10px;">
-    <img src="./assets/fly.png" alt="Image 3" style="width:65%; height:auto;">
-  </div>
-  
-  <div style="flex: 25%; padding: 10px;">
-    <img src="./assets/bill.png" alt="Image 4" style="width:25%; height:auto;">
-  </div>
-
-  <div style="flex: 45%; padding: 10px;">
-    <img src="./assets/math_0.png" alt="Image 5" style="width:45%; height:auto;">
-  </div>
-  
-  <div style="flex: 45%; padding: 10px;">
-    <img src="./assets/math_1.png" alt="Image 6" style="width:45%; height:auto;">
-  </div>
-
-</div>
 
 
 #### 音频Demo
