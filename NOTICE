@@ -1,0 +1,20 @@
+Third-Party Components
+======================
+
+This product contains components developed by third parties:
+
+A. Apache 2.0 Licensed Components
+The following files are used under Apache 2.0 License:
+   cosy24k_vocoder
+   - Source: CosyVoice 2.0 (https://github.com/FunAudioLLM/CosyVoice/tree/main)
+   - License: Apache 2.0
+   - Copyright: 2024 Alibaba Inc
+
+B. MIT Licensed Components
+The following files are used under MIT License:
+   modeling/matcha_components.py
+   modeling/matcha_transformer.py
+   modeling/matcha_feat.py
+   - Source: Matcha-TTS (https://github.com/shivammehta25/Matcha-TTS)
+   - License: MIT
+   - Copyright: Copyright (c) 2023 Shivam Mehta
