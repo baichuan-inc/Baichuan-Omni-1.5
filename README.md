@@ -49,7 +49,7 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 
 - **Leading Medical Image Understanding**: Achieves state-of-the-art performance on GMAI-MMBench and OpenMM-Medical. Specifically, on OpenMM-Medical, Baichuan-Omni-1.5 scores 83.8% using a 7B LLM, surpassing Qwen2-VL-72B's score of 80.7%.
 
-- **Strong Real-world Understanding and Other Features**: Enhances numerous visual understanding capabilities, handling images of arbitrary aspect ratios up to 1.8 million pixels (e.g., 1344x1344). Scores 68.8 on RealWorldQA, outperforming commercial closed-source models and recent open-source omni-modal models. It also ranks first in both English and Chinese subsets of MMBench with scores of 85.6% and 83.6%, respectively.
+- **Strong Real-world Understanding and Other Features**: Enhances numerous visual understanding capabilities, handling images of arbitrary aspect ratios up to 1.8 million pixels. Our model gets 68.8% on RealWorldQA, outperforming commercial closed-source models (GPT-4o-mini) and recent open-source omni-modal models. It also ranks first in both English and Chinese subsets of MMBench with scores of 85.6% and 83.6%, respectively.
 
 ### Model Architecture
 

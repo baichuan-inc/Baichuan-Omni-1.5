@@ -66,7 +66,7 @@ Baichuan-Omni-1.5 **支持高质量可控制声音的中英双语实时对话**�
 Baichuan-Omni-1.5 在GMAI-MMBench以及OpenMM-Medical上取得了最佳的表现。在OpenMM-Medical上，Baichuan-Omni-1.5仅使用7B的LLM取得了83.8%的高分，超过Qwen2-VL-72B 的 80.7%。
 
 - **强大的真实世界理解能力及其他功能。**
-Baichuan-Omni-1.5 基于NaViT 进一步优化了 Baichuan-omni 的众多视觉理解能力，其可以处理任意长宽比的图像，像素数可达 180 万（如 1344x1344）。在 RealWorldQA 上取得68.8分的成绩，**超过 GPT-4o-mini** 等商用闭源模型以及最近开源的全模态模型。在MMBench上的英文/中文评测子集分别取得85.6%/83.6%的高分，该表现也处于同级别模型中的第一梯队。
+Baichuan-Omni-1.5 基于NaViT 进一步优化了 Baichuan-omni 的众多视觉理解能力，其可以处理任意长宽比的图像，像素数可达 180 万。在 RealWorldQA 上取得68.8分的成绩，**超过 GPT-4o-mini** 等商用闭源模型以及最近开源的全模态模型。在MMBench上的英文/中文评测子集分别取得85.6%/83.6%的高分，该表现也处于同级别模型中的第一梯队。
 
 **模型架构**
 
