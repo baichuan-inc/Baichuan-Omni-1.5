@@ -54,7 +54,7 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 ### Model Architecture
 
 - **End-to-End Omni-modal Architecture**: Trains different modality encoders/decoders through a multi-stage, end-to-end progressive method to fully leverage rich knowledge across modalities, promoting complementary knowledge integration. During the omni-modal pretraining phase, the model is entirely trained using NTP loss.
-- **High-Quality Controllable Voice Solutions**: Redesigns the multimodal system prompt to include traditional text prompts and **voice system prompts** for specifying the model's voice characteristics. The model can flexibly control voice styles via textual or vocal samples during inference, supporting advanced capabilities like end-to-end voice cloning and voice creation.
+- **High-Quality Controllable Voice Solutions**: Redesigns the multimodal system prompt to include traditional text prompts and **voice system prompts** for specifying the model's voice characteristics.
 
 ### Multi-stage Omni-modal Training Framework
 
