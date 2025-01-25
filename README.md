@@ -45,7 +45,7 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 
 - **Excellent Visual Capabilities**: On the OpenCompass benchmark suite, Baichuan-Omni-1.5 scores an average of 73.3 across ten visual evaluation sets. Within the 7B parameter range, it outperforms **GPT-4o-mini**, Gemini 1.5 Pro, and Claude 3.5 Sonnet in single-image understanding. Its video comprehension also exceeds that of **GPT-4V**, Claude 3.5 Sonnet, and other open-source omni-modal models.
 
-- **Outstanding Speech Capabilities**: Supports **high-quality controllable bilingual (Chinese and English) real-time conversations**. Baichuan-Omni-1.5 excels in speech understanding tasks (e.g., ASR and STT), surpassing **GPT-4o-realtime**, and demonstrates the highest speech generation performance among open-source models in semantic and acoustic evaluations. Additional capabilities include emotion/speed/style control, voice cloning, and role-playing.
+- **Outstanding Speech Capabilities**: Supports **high-quality controllable bilingual (Chinese and English) real-time conversations**. Baichuan-Omni-1.5 excels in speech understanding tasks (e.g., ASR and STT), surpassing **GPT-4o-realtime**, and demonstrates the highest speech generation performance among open-source models in semantic and acoustic evaluations. 
 
 - **Leading Medical Image Understanding**: Achieves state-of-the-art performance on GMAI-MMBench and OpenMM-Medical. Specifically, on OpenMM-Medical, Baichuan-Omni-1.5 scores 83.8% using a 7B LLM, surpassing Qwen2-VL-72B's score of 80.7%.
 
