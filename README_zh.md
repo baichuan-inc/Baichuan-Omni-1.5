@@ -15,7 +15,7 @@
 </p>
 </div>
 
-**Baichuan-Omni-1.5** 是从 Baichuan-omni 升级的最新的、端到端训练的、支持全模态输入/双模态输出的多模态大模型。该模型使用Qwen2.5-7B作为大语言模型基座，可以以端到端方式，接受图像、视频、文本、音频作为输入，并且以可控的方式生成高质量文本和语音。
+**Baichuan-Omni-1.5** 是从 Baichuan-omni 升级的最新的、端到端训练的、支持全模态输入/双模态输出的多模态大模型。该模型使用Qwen2.5-7B作为大语言模型基座，可以端到端方式，接受图像、视频、文本、音频作为输入，并且以可控的方式生成高质量文本和语音。
 
 - **Baichuan-Omni-1.5-Base**: 为促进全模态大模型发展，我们开源了使用高质量海量数据训练的全模态基座模型。该模型未经SFT指令微调，可塑性强，是**目前性能最好的全模态基座模型**。
 
@@ -51,22 +51,20 @@
 
 ## Baichuan-Omni-1.5
 
-Baichuan-Omni-1.5 是 Baichuan-omni 系列的最新、性能一流模型。该模型通过端到端方式训练和推理。相比 Baichuan-omni，该模型在文本/图像/音频/视频理解以及文本/音频生成上有显著提升，并支持了可控的实时语音对话和多模态实时交互的新功能。Baichuan-Omni-1.5 的主要特性包括：
+Baichuan-Omni-1.5 是 Baichuan-omni 系列的最新、性能一流模型。该模型通过端到端方式训练和推理。与其他开源模型相比，Baichuan-Omni-1.5 在文本、图像、音频和视频输入的理解能力有显著提升，并支持了可控的实时语音对话和多模态实时交互的新功能。此外，Baichuan-Omni-1.5 也是目前最出色的开源医疗多模态模型。Baichuan-Omni-1.5 的主要特性包括：
 
-- **多模态理解和交互能力**
-Baichuan-Omni-1.5 接受图像、视频、文本、音频作为输入，并生成高质量文本和语音输出，能够**接受连续的视频和音频流，并和用户进行实时语音交互**。在针对全模态理解的综合评测基准 OminiBench 中，Baichuan-Omni-1.5 取得开源社区一流水平，并**超过了 GPT-4o-mini**。
+- **多模态理解和交互能力：**
+Baichuan-Omni-1.5 接受图像、视频、文本、音频作为输入，并生成高质量文本和语音输出，能够**在不损害任何模态能力的情况下实现无缝的高质量跨模态交互，并和用户进行实时语音对话**。在针对全模态理解的综合评测基准 OminiBench 中，Baichuan-Omni-1.5 取得开源社区一流水平，并**超过了 GPT-4o-mini**。
 
-- **优秀的视觉能力。**
-Baichuan-Omni-1.5 在 OpenCompass 常用的十个视觉评测集上平均得分 73.3，**在7B量级的大小下，在单图理解方面超越了 GPT-4o-mini、和GPT-4o的结果相近**。此外，它的视频理解表现也**优于 GPT-4V**以及开源的全模态模型。
+- **优秀的视觉能力：**
+Baichuan-Omni-1.5 在 OpenCompass 常用的十个视觉评测集上平均得分 73.3，**在7B量级的大小下，在图像理解方面超越了 GPT-4o-mini，比GPT-4o-mini平均高出6分，并且和GPT-4o的结果相近**。此外，**视频理解表现也优于GPT-4V**。
 
-- **出色的语音能力。**
-Baichuan-Omni-1.5 **支持高质量可控制声音的中英双语实时对话**。Baichuan-Omni-1.5 在语音理解任务**优于 GLM-4-Voice**，并在语音对话的语义和声学评估中展现了**开源模型中最高的语音生成性能**。
+- **出色的语音能力：**
+Baichuan-Omni-1.5 通过一个 8 层 RVQ 音频Tokenizer（Baichuan-Audio-Tokenizer），在 12.5 Hz 帧率下实现了语义和声学信息捕获的最佳平衡，**支持高质量可控制声音的中英双语实时对话**。Baichuan-Omni-1.5 在语音理解任务**优于 GLM-4-Voice**，并在语音对话的语义和声学评估中展现了**开源模型中最高的语音生成性能**。同时，我们还开源了音频理解和生成基准（OpenAudio-Bench），以评估音频的端到端能力。
 
-- **领先的医疗图像理解能力。**
-Baichuan-Omni-1.5 在GMAI-MMBench以及OpenMM-Medical上取得了最佳的表现。在OpenMM-Medical上，Baichuan-Omni-1.5仅使用7B的LLM取得了83.8%的高分，超过Qwen2-VL-72B 的 80.7%。
+- **领先的医疗图像理解能力：**
+我们从开源数据集中收集了一个比较全面的医学理解基准（OpenMM-Medical）用于评估模型的医学能力。Baichuan-Omni-1.5 **在 GMAI-MMBench 以及 OpenMM-Medical 上取得了最佳的表现**。在 OpenMM-Medical 上，Baichuan-Omni-1.5 仅使用 7B 的 LLM 取得了 83.8% 的高分，超过 Qwen2-VL-72B 的 80.7%。
 
-- **强大的真实世界理解能力及其他功能。**
-Baichuan-Omni-1.5 基于NaViT 进一步优化了 Baichuan-omni 的众多视觉理解能力，其可以处理任意长宽比的图像，像素数可达 180 万。在 RealWorldQA 上取得68.8分的成绩，**超过 GPT-4o-mini** 等商用闭源模型以及最近开源的全模态模型。在MMBench上的英文/中文评测子集分别取得85.6%/83.6%的高分，该表现也处于同级别模型中的第一梯队。
 
 ### 模型架构
 
@@ -74,9 +72,7 @@ Baichuan-Omni-1.5 基于NaViT 进一步优化了 Baichuan-omni 的众多视觉�
 <img src="./assets/architecture.png" , width=80%>
 </div>
 
-- **端到端全模态架构。** 通过**多阶段，端到端**渐进式的方式训练不同模态的编/解码模块以充分利用不同模态涵盖的丰富知识，期待不同模态知识互补。全模态预训练阶段，模型完全使用 NTP 损失进行端到端训练。
-- **高质量可控制的声音方案。** 重新设计了多模态系统提示，包含传统文本系统提示词，和**用于指定模型声音的语音系统提示词**。
-
+<br>
 
 ### 多阶段全模态的训练框架
 
@@ -279,7 +275,7 @@ Baichuan-Omni-1.5 基于NaViT 进一步优化了 Baichuan-omni 的众多视觉�
       <tr>
         <td>Qwen2-VL-7B</td>
         <td>7B</td>
-        <td><b>86.4<br></td>
+        <td>81.7</td>
         <td>81.9</td>
         <td><b>76.5<br></td>
         <td>52.7</td>
@@ -336,7 +332,7 @@ Baichuan-Omni-1.5 基于NaViT 进一步优化了 Baichuan-omni 的众多视觉�
       <tr>
         <td><b>Baichuan-Omni-1.5<br></td>
         <td>7B</td>
-        <td>85.6</td>
+        <td><b>85.6<br></td>
         <td><b>83.6<br></td>
         <td>75.7</td>
         <td>53.9</td>
@@ -1122,11 +1118,11 @@ coming soon
 ### 开源评测集
 **OpenMM-Medical**
 
-为了更全面的评估模型医疗多模态能力，我们构建了OpenMM-Medical，包含来自 42 个公开的医学图像数据集，例如 ACRIMA（眼底图像）、BioMediTech（显微镜图像）和 CoronaHack（X 射线），总共包含 88,996 张图像。
+为了更全面的评估模型医疗多模态能力，我们从公开医学图像数据集中收集了 OpenMM-Medical 评测集，包含 ACRIMA（眼底图像）、BioMediTech（显微镜图像）和 CoronaHack（X 射线）等，总共包含 88,996 张图像。
 
 **OpenAudioBench**
 
-为了更高效的评估模型的“智商”问题，我们构建了OpenAudioBench，共包含5个音频端到端理解子评测集，分别是4个公开评测集（llama question、WEB QA、TriviaQA、AlpacaEval），以及百川团队自建的语音逻辑推理评测集，共2701条数据，能够综合反映模型“智商”水平。
+为了更高效的评估模型的“智商”问题，我们构建了 OpenAudioBench，共包含5个音频端到端理解子评测集，分别是4个公开评测集（llama question、WEB QA、TriviaQA、AlpacaEval），以及百川团队自建的语音逻辑推理评测集，共2701条数据，能够综合反映模型“智商”水平。
 
 ### 致谢
 
