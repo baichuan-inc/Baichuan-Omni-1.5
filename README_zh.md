@@ -1087,10 +1087,7 @@ conda create -n baichuan_omni python==3.12
 conda activate baichuan_omni
 pip install torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 --index-url https://download.pytorch.org/whl/cu124
 pip install -r baichuan_omni_requirements.txt
-pip install accelerate
-pip install flash_attn==2.6.3
-pip install speechbrain==1.0.0
-pip install deepspeed==0.14.4
+pip install accelerate flash_attn==2.6.3 speechbrain==1.0.0 deepspeed==0.14.4
 apt install llvm ffmpeg
 ```
 ##### 下载模型并修改模型路径
