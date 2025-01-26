@@ -8,10 +8,10 @@
 [中文](./README_zh.md)</strong>
 
 <p align="center">
-Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5-Base">🤗</a>  | Technical Report <a href="https://github.com/baichuan-inc/Baichuan-Omni-1.5/blob/main/baichuan_omni_1_5.pdf">📖</a> 
+Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1d5">🤗</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1d5-Base">🤗</a>  | Technical Report <a href="https://github.com/baichuan-inc/Baichuan-Omni-1.5/blob/main/baichuan_omni_1_5.pdf">📖</a> 
 </p>
 <p align="center">
-OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medical">🤗</a>  | OpenAudioBench <a href="https://huggingface.co/datasets/baichuan-inc/openAudioBench">🤗</a> 
+OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM_Medical">🤗</a>  | OpenAudioBench <a href="https://huggingface.co/datasets/baichuan-inc/openAudioBench">🤗</a> 
 </p>
 </div>
 
@@ -24,6 +24,7 @@ OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medi
 ## 📖 Table of Contents
 
 - [🏁 Baichuan-Omni-1.5](#baichuan-omni-1.5)
+- [⭐ Model Architecture](#model-architecture)
 - [🧠 Multi-stage Omni-modal Training Framework](#multi-stage-omni-modal-training-framework)
 - [📊 Performance Evaluation](#performance-evaluation)
 - [🍰 Example Use Cases](#example-use-cases)
@@ -32,29 +33,31 @@ OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medi
   - [Video Demo](#video-demo)
   - [Audio Demo](#audio-demo)
 - [⚙️ Fine-tuning](#fine-tuning)
+- [📈 Open-source Evaluation Datasets](#open-source-evaluation-datasets)
 - [📣 Acknowledgments](#acknowledgments)
 - [⚠️ Disclaimer](#disclaimer)
 - [📜 License](#license)
-- [📜 Citation](#citation)
+- [✒️ Citation](#citation)
 
 ## Baichuan-Omni-1.5
 
-Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-omni series, trained and inferred through an end-to-end approach. Compared to its predecessor, Baichuan-omni, this model demonstrates significant improvements in text/image/audio/video understanding and text/audio generation, alongside new functionalities such as controllable real-time voice dialogue and omni-modal real-time interaction. Key features of Baichuan-Omni-1.5 include:
+Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-omni series, trained and inferred through an end-to-end approach. Compared to the open-sourced counterparts, Baichuan-Omni-1.5 demonstrates significant improvements in the understanding of text, image, audio and video inputs. Notably, the model showcases impressive capabilities in controllable real-time voice interactions and collaborative real-time understanding across various modalities. In addition to its general capabilities, Baichuan-Omni-1.5 stands out as the most outstanding MLLM in the medical domain. This opens up exciting new possibilities for AGI to contribute to the well-being of human society. Based on the evaluation results, we summarize the key advantages and contributions of Baichuan-Omni-1.5:
 
-- **Omni-modal Understanding and Interaction Capabilities**: Accepts images, videos, texts, and audios as inputs, generating high-quality text and speech outputs. It can handle continuous video and audio streams, enabling **real-time voice interactions** with users. In comprehensive benchmarks like OminiBench, Baichuan-Omni-1.5 achieves top-tier performance within the open-source community, surpassing **GPT-4o-mini**.
+- **Omni-modal Interaction**: Baichuan-Omni-1.5 is designed to process text, image, audio, and video inputs, delivering high-quality text and speech outputs. It is capable of achieving **seamless, high-quality cross-modal interactions** without compromising the capabilities of any modality.
 
-- **Excellent Visual Capabilities**: On the OpenCompass benchmark suite, Baichuan-Omni-1.5 scores an average of 73.3 across ten visual evaluation sets. Within the 7B parameter range, it outperforms **GPT-4o-mini**, Gemini 1.5 Pro, and Claude 3.5 Sonnet in single-image understanding. Its video comprehension also exceeds that of **GPT-4V**, Claude 3.5 Sonnet, and other open-source omni-modal models.
+- **Excellent Vision-Language Capability**: Baichuan-Omni-1.5 scores an average of 73.3 across ten image-understanding benchmarks, which surpasses **GPT-4o-mini** by an average of 6 points.
 
-- **Outstanding Speech Capabilities**: Supports **high-quality controllable bilingual (Chinese and English) real-time conversations**. Baichuan-Omni-1.5 excels in speech understanding tasks (e.g., ASR and STT), surpassing **GPT-4o-realtime**, and demonstrates the highest speech generation performance among open-source models in semantic and acoustic evaluations. Additional capabilities include emotion/speed/style control, voice cloning, and role-playing.
+- **Unified and Outstanding Speech Capabilities**: We design an 8-layer RVQ audio tokenizer (**Baichuan-Audio-Tokenizer**) achieves an optimal balance between capturing semantic and acoustic information with 12.5 Hz frame rate, which supports **high-quality controllable bilingual (Chinese and English) real-time conversations**. At the same time, we have also open-sourced the audio understanding and generation benchmark (OpenAudio-Bench) to evaluate the end-to-end capabilities of audio. 
 
-- **Leading Medical Image Understanding**: Achieves state-of-the-art performance on GMAI-MMBench and OpenMM-Medical. Specifically, on OpenMM-Medical, Baichuan-Omni-1.5 scores 83.8% using a 7B LLM, surpassing Qwen2-VL-72B's score of 80.7%.
-
-- **Strong Real-world Understanding and Other Features**: Enhances numerous visual understanding capabilities, handling images of arbitrary aspect ratios up to 1.8 million pixels (e.g., 1344x1344). Scores 68.8 on RealWorldQA, outperforming commercial closed-source models and recent open-source omni-modal models. It also ranks first in both English and Chinese subsets of MMBench with scores of 85.6% and 83.6%, respectively.
+- **Leading Medical Image Understanding**: We collect a comprehensive medical understanding benchmark: OpenMM-Medical, which is an integration of existing datasets. **Our model achieves state-of-the-art perfor-mance on GMAI-MMBench and OpenMM-Medical**. Specifically, on OpenMM-Medical, Baichuan-Omni-1.5 scores 83.8% using a 7B LLM, surpassing Qwen2-VL-72B’s score of 80.7%.
 
 ### Model Architecture
 
-- **End-to-End Omni-modal Architecture**: Trains different modality encoders/decoders through a multi-stage, end-to-end progressive method to fully leverage rich knowledge across modalities, promoting complementary knowledge integration. During the omni-modal pretraining phase, the model is entirely trained using NTP loss.
-- **High-Quality Controllable Voice Solutions**: Redesigns the multimodal system prompt to include traditional text prompts and **voice system prompts** for specifying the model's voice characteristics. The model can flexibly control voice styles via textual or vocal samples during inference, supporting advanced capabilities like end-to-end voice cloning and voice creation.
+<div align="center">
+<img src="./assets/architecture.png" , width=80%>
+</div>
+
+<br>
 
 ### Multi-stage Omni-modal Training Framework
 
@@ -258,7 +261,7 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
       <tr>
         <td>Qwen2-VL-7B</td>
         <td>7B</td>
-        <td><b>86.4<br></td>
+        <td>81.7</td>
         <td>81.9</td>
         <td><b>76.5<br></td>
         <td>52.7</td>
@@ -315,7 +318,7 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
       <tr>
         <td><b>Baichuan-Omni-1.5<br></td>
         <td>7B</td>
-        <td>85.6</td>
+        <td><b>85.6<br></td>
         <td><b>83.6<br></td>
         <td>75.7</td>
         <td>53.9</td>
@@ -782,7 +785,116 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 <summary>Click here to view detailed evaluation results of audio understanding and generation ability.</summary>
 
 #### Audio understanding and generation ability
-
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+  <thead>
+    <tr>
+      <th colspan="12">Audio Comprehensive Capacity</th>
+    </tr></thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">Model</td>
+      <td rowspan="2">Size</td>
+      <td colspan="2">Reasoning QA</td>
+      <td colspan="2">Llama Questions</td>
+      <td colspan="2">Web Questions</td>
+      <td colspan="2">TriviaQA</td>
+      <td colspan="2">AlpacaEval</td>
+    </tr>
+    <tr>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+    </tr>
+    <tr>
+      <td colspan="12">Proprietary Models</td>
+    </tr>
+    <tr>
+      <td>GPT-4o-Audio</td>
+      <td>-</td>
+      <td><b>55.6</td>
+      <td>-</td>
+      <td><b>88.4</td>
+      <td>-</td>
+      <td><b>8.10</td>
+      <td>-</td>
+      <td><b>9.06</td>
+      <td>-</td>
+      <td><b>8.01</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td colspan="12">Open-source Models (Pure Audio)</td>
+    </tr>
+    <tr>
+      <td>GLM-4-Voice</td>
+      <td>9B</td>
+      <td>-</td>
+      <td>26.5</td>
+      <td>-</td>
+      <td>71.0</td>
+      <td>-</td>
+      <td>5.15</td>
+      <td>-</td>
+      <td>4.66</td>
+      <td>-</td>
+      <td>4.89</td>
+    </tr>
+    <tr>
+      <td colspan="12">Open-source Models (Omni-modal)</td>
+    </tr>
+    <tr>
+      <td>VITA-1.5</td>
+      <td>7B</td>
+      <td>41.0</td>
+      <td>-</td>
+      <td>74.2</td>
+      <td>-</td>
+      <td>5.73</td>
+      <td>-</td>
+      <td>4.68</td>
+      <td>-</td>
+      <td>6.82</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>MiniCPM-o 2.6</td>
+      <td>7B</td>
+      <td>38.6</td>
+      <td>-</td>
+      <td>77.8</td>
+      <td>-</td>
+      <td>6.86</td>
+      <td>-</td>
+      <td>6.19</td>
+      <td>-</td>
+      <td>5.18</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><b>Baichuan-Omni-1.5</td>
+      <td>7B</td>
+      <td>50.0</td>
+      <td><b>40.9</td>
+      <td>78.5</td>
+      <td><b>75.3</td>
+      <td>5.91</td>
+      <td><b>5.52</td>
+      <td>5.72</td>
+      <td>5.31</td>
+      <td>7.79</td>
+      <td><b>6.94</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
 </details>
 
 <details>
@@ -955,7 +1067,7 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 
 ##### Creating a Virtual Environment
 ```bash
-conda create -n baichuan_omni python==3.10
+conda create -n baichuan_omni python==3.12
 conda activate baichuan_omni
 pip install -r baichuan_omni_requirements.txt
 apt install llvm ffmpeg
@@ -991,7 +1103,7 @@ Coming soon
 
 **OpenMM-Medical**
 
-To comprehensively evaluate the model's multi-modal medical capabilities, we have constructed OpenMM-Medical, which includes data from 42 publicly available medical image datasets such as ACRIMA (retinal images), BioMediTech (microscope images), and CoronaHack (X-rays), totaling 88,996 images.
+To comprehensively evaluate the model's multi-modal medical capabilities, we have collected OpenMM-Medical, which includes data from public available medical image datasets such as ACRIMA (retinal images), BioMediTech (microscope images), and CoronaHack (X-rays), totaling 88,996 images.
 
 **OpenAudioBench**
 
@@ -1020,9 +1132,3 @@ Community use of the Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base models must comply
 - There is no possibility of re-granting the commercial license to third parties without prior approval from Baichuan Inc.
 
 Under these conditions, you need to submit the required application materials for the "Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base Community License Agreement" via email at opensource.contact@baichuan-inc.com. Upon approval, Baichuan Inc. will grant you a non-exclusive, global, non-transferable, non-sublicensable, and revocable commercial license.
-
-### Citation
-
-If you wish to cite our work, please use the following reference:
-@article{
-}

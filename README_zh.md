@@ -8,59 +8,71 @@
   [English](./README.md)</strong>
   
   <p align="center">
-  Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5">🤗</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1.5-Base">🤗</a>  | 技术报告 <a href="https://github.com/baichuan-inc/Baichuan-Omni-1.5/blob/main/baichuan_omni_1_5.pdf">📖</a> 
+  Baichuan-Omni-1.5 <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1d5">🤗</a> | Baichuan-Omni-1.5-Base <a href="https://huggingface.co/baichuan-inc/Baichuan-Omni-1d5-Base">🤗</a>  | 技术报告 <a href="https://github.com/baichuan-inc/Baichuan-Omni-1.5/blob/main/baichuan_omni_1_5.pdf">📖</a> 
 </p>
   <p align="center">
-    OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM-Medical">🤗</a> | OpenAudioBench <a href="https://huggingface.co/datasets/baichuan-inc/OpenAudioBench">🤗</a> 
+    OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM_Medical">🤗</a> | OpenAudioBench <a href="https://huggingface.co/datasets/baichuan-inc/OpenAudioBench">🤗</a> 
 </p>
 </div>
 
-**Baichuan-Omni-1.5** 是从 Baichuan-omni 升级的最新的、端到端训练的、支持全模态输入/双模态输出的多模态大模型。该模型使用Qwen2.5-7B作为大语言模型基座，可以以端到端方式，接受图像、视频、文本、音频作为输入，并且以可控的方式生成高质量文本和语音。
+**Baichuan-Omni-1.5** 是从 Baichuan-omni 升级的最新的、端到端训练的、支持全模态输入/双模态输出的多模态大模型。该模型使用Qwen2.5-7B作为大语言模型基座，可以端到端方式，接受图像、视频、文本、音频作为输入，并且以可控的方式生成高质量文本和语音。
 
 - **Baichuan-Omni-1.5-Base**: 为促进全模态大模型发展，我们开源了使用高质量海量数据训练的全模态基座模型。该模型未经SFT指令微调，可塑性强，是**目前性能最好的全模态基座模型**。
 
 - **Baichuan-Omni-1.5**: 基于性能强悍的Baichuan-Omni-1.5-base，使用高质量的全模态对齐数据，进行端到端的多模态指令数据训练。Baichuan-Omni-1.5的纯文本、图像、视频、音频理解能力达到了 GPT-4o-mini 级别。
 
 ## 📖 目录
-
-- [🏁 Baichuan-Omni-1.5](#baichuan-omni-1.5)
-- [🧠 多阶段全模态的训练框架](#多阶段全模态的训练框架)
-- [📊 性能评估](#性能评估)
-- [🍰 典型示例](#典型示例)
-- [🚀 本地 WebUI Demo](#本地-WebUI-Demo)
-  - [图像Demo](#图像demo)
-  - [视频Demo](#视频demo)
-  - [音频Demo](#音频demo)
-- [⚙️ 微调](#微调)
-- [📣 致谢](#致谢)
-- [⚠️ 声明](#声明)
-- [📜 协议](#协议)
-- [📜 引用](#引用)
+- [**开源全模态基座，支持文本、图像、视频、音频输入以及文本、音频输出的全模态大模型**](#开源全模态基座支持文本图像视频音频输入以及文本音频输出的全模态大模型)
+- [📖 目录](#-目录)
+- [🏁 Baichuan-Omni-1.5](#baichuan-omni-15)
+  - [⭐ 模型架构](#模型架构)
+  - [🧠 多阶段全模态的训练框架](#多阶段全模态的训练框架)
+  - [📊 性能评估](#性能评估)
+    - [纯文本理解能力](#纯文本理解能力)
+    - [图像理解能力](#图像理解能力)
+    - [视频理解能力](#视频理解能力)
+    - [语音理解与生成综合能力](#语音理解与生成综合能力)
+    - [全模态理解能力](#全模态理解能力)
+    - [医疗图像理解能力](#医疗图像理解能力)
+  - [🍰 典型示例](#典型示例)
+  - [🚀 本地 WebUI Demo](#本地-webui-demo)
+    - [准备工作](#准备工作)
+      - [创建虚拟环境](#创建虚拟环境)
+      - [下载模型并修改模型路径](#下载模型并修改模型路径)
+    - [图像Demo](#图像demo)
+    - [音频Demo](#音频demo)
+    - [视频Demo](#视频demo)
+  - [⚙️ 微调](#微调)
+  - [📈 开源评测集](#开源评测集)
+  - [📣 致谢](#致谢)
+  - [⚠️ 声明](#声明)
+  - [📜 协议](#协议)
+  - [✒️ 引用](#引用)
 
 ## Baichuan-Omni-1.5
 
-Baichuan-Omni-1.5 是 Baichuan-omni 系列的最新、性能一流模型。该模型通过端到端方式训练和推理。相比 Baichuan-omni，该模型在文本/图像/音频/视频理解以及文本/音频生成上有显著提升，并支持了可控的实时语音对话和多模态实时交互的新功能。Baichuan-Omni-1.5 的主要特性包括：
+Baichuan-Omni-1.5 是 Baichuan-omni 系列的最新、性能一流模型。该模型通过端到端方式训练和推理。与其他开源模型相比，Baichuan-Omni-1.5 在文本、图像、音频和视频输入的理解能力有显著提升，并支持了可控的实时语音对话和多模态实时交互的新功能。此外，Baichuan-Omni-1.5 也是目前最出色的开源医疗多模态模型。Baichuan-Omni-1.5 的主要特性包括：
 
-- **多模态理解和交互能力**
-Baichuan-Omni-1.5 接受图像、视频、文本、音频作为输入，并生成高质量文本和语音输出，能够**接受连续的视频和音频流，并和用户进行实时语音交互**。在针对全模态理解的综合评测基准 OminiBench 中，Baichuan-Omni-1.5 取得开源社区一流水平，并**超过了 GPT-4o-mini**。
+- **多模态理解和交互能力：**
+Baichuan-Omni-1.5 接受图像、视频、文本、音频作为输入，并生成高质量文本和语音输出，能够**在不损害任何模态能力的情况下实现无缝的高质量跨模态交互，并和用户进行实时语音对话**。在针对全模态理解的综合评测基准 OminiBench 中，Baichuan-Omni-1.5 取得开源社区一流水平，并**超过了 GPT-4o-mini**。
 
-- **优秀的视觉能力。**
-Baichuan-Omni-1.5 在 OpenCompass 常用的十个视觉评测集上平均得分 73.3，**在7B量级的大小下，在单图理解方面超越了 GPT-4o-mini、Gemini 1.5 Pro 和 Claude 3.5 Sonnet 等主流商用闭源多模态大模型**。此外，它的视频理解表现也**优于 GPT-4V 和 Claude 3.5 Sonnet**以及开源的全模态模型。
+- **优秀的视觉能力：**
+Baichuan-Omni-1.5 在 OpenCompass 常用的十个视觉评测集上平均得分 73.3，**在7B量级的大小下，在图像理解方面超越了 GPT-4o-mini，比GPT-4o-mini平均高出6分，并且和GPT-4o的结果相近**。此外，**视频理解表现也优于GPT-4V**。
 
-- **出色的语音能力。**
-Baichuan-Omni-1.5 **支持高质量可控制声音的中英双语实时对话**。Baichuan-Omni-1.5 在语音理解任务（如 ASR 和 STT 等）**优于 GPT-4o-realtime**，并在语音对话的语义和声学评估中展现了**开源模型中最高的语音生成性能**。它还支持情绪/语速/风格控制、语音克隆、角色扮演等进阶能力。
+- **出色的语音能力：**
+Baichuan-Omni-1.5 通过一个 8 层 RVQ 音频Tokenizer（Baichuan-Audio-Tokenizer），在 12.5 Hz 帧率下实现了语义和声学信息捕获的最佳平衡，**支持高质量可控制声音的中英双语实时对话**。Baichuan-Omni-1.5 在语音理解任务**优于 GLM-4-Voice**，并在语音对话的语义和声学评估中展现了**开源模型中最高的语音生成性能**。同时，我们还开源了音频理解和生成基准（OpenAudio-Bench），以评估音频的端到端能力。
 
-- **领先的医疗图像理解能力。**
-Baichuan-Omni-1.5 在GMAI-MMBench以及OpenMM-Medical上取得了最佳的表现。在OpenMM-Medical上，Baichuan-Omni-1.5仅使用7B的LLM取得了83.8%的高分，超过Qwen2-VL-72B 的 80.7%。
+- **领先的医疗图像理解能力：**
+我们从开源数据集中收集了一个比较全面的医学理解基准（OpenMM-Medical）用于评估模型的医学能力。Baichuan-Omni-1.5 **在 GMAI-MMBench 以及 OpenMM-Medical 上取得了最佳的表现**。在 OpenMM-Medical 上，Baichuan-Omni-1.5 仅使用 7B 的 LLM 取得了 83.8% 的高分，超过 Qwen2-VL-72B 的 80.7%。
 
-- **强大的真实世界理解能力及其他功能。**
-Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力，其可以处理任意长宽比的图像，像素数可达 180 万（如 1344x1344）。在 RealWorldQA 上取得68.8分的成绩，**超过 GPT-4o-mini** 等商用闭源模型以及最近开源的全模态模型。在MMBench上的英文/中文评测子集分别取得85.6%/83.6%的高分，该表现也处于同级别模型中的第一梯队。
 
-**模型架构**
+### 模型架构
 
-- **端到端全模态架构。** 通过**多阶段，端到端**渐进式的方式训练不同模态的编/解码模块以充分利用不同模态涵盖的丰富知识，期待不同模态知识互补。全模态预训练阶段，模型完全使用 NTP 损失进行端到端训练。
-- **高质量可控制的声音方案。** 重新设计了多模态系统提示，包含传统文本系统提示词，和**用于指定模型声音的语音系统提示词**。模型可在推理时灵活地通过文字或语音样例控制声音风格，并支持端到端声音克隆和音色创建等高级能力。
+<div align="center">
+<img src="./assets/architecture.png" , width=80%>
+</div>
 
+<br>
 
 ### 多阶段全模态的训练框架
 
@@ -263,7 +275,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
       <tr>
         <td>Qwen2-VL-7B</td>
         <td>7B</td>
-        <td><b>86.4<br></td>
+        <td>81.7</td>
         <td>81.9</td>
         <td><b>76.5<br></td>
         <td>52.7</td>
@@ -320,7 +332,7 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
       <tr>
         <td><b>Baichuan-Omni-1.5<br></td>
         <td>7B</td>
-        <td>85.6</td>
+        <td><b>85.6<br></td>
         <td><b>83.6<br></td>
         <td>75.7</td>
         <td>53.9</td>
@@ -784,17 +796,120 @@ Baichuan-Omni-1.5 进一步优化了 Baichuan-omni 的众多视觉理解能力�
 
 <details>
 
-<summary>点击查看语音理解能力详细评测结果。</summary>
+<summary>点击查看语音理解与生成能力详细评测结果。</summary>
 
-#### 语音理解能力
+#### 语音理解与生成综合能力
+<div align="center">
+  <table style="margin: 0 auto; text-align: center;">
+  <thead>
+    <tr>
+      <th colspan="12">Audio Comprehensive Capacity</th>
+    </tr></thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">Model</td>
+      <td rowspan="2">Size</td>
+      <td colspan="2">Reasoning QA</td>
+      <td colspan="2">Llama Questions</td>
+      <td colspan="2">Web Questions</td>
+      <td colspan="2">TriviaQA</td>
+      <td colspan="2">AlpacaEval</td>
+    </tr>
+    <tr>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+      <td>s→t</td>
+      <td>s→s</td>
+    </tr>
+    <tr>
+      <td colspan="12">Proprietary Models</td>
+    </tr>
+    <tr>
+      <td>GPT-4o-Audio</td>
+      <td>-</td>
+      <td><b>55.6</td>
+      <td>-</td>
+      <td><b>88.4</td>
+      <td>-</td>
+      <td><b>8.10</td>
+      <td>-</td>
+      <td><b>9.06</td>
+      <td>-</td>
+      <td><b>8.01</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td colspan="12">Open-source Models (Pure Audio)</td>
+    </tr>
+    <tr>
+      <td>GLM-4-Voice</td>
+      <td>9B</td>
+      <td>-</td>
+      <td>26.5</td>
+      <td>-</td>
+      <td>71.0</td>
+      <td>-</td>
+      <td>5.15</td>
+      <td>-</td>
+      <td>4.66</td>
+      <td>-</td>
+      <td>4.89</td>
+    </tr>
+    <tr>
+      <td colspan="12">Open-source Models (Omni-modal)</td>
+    </tr>
+    <tr>
+      <td>VITA-1.5</td>
+      <td>7B</td>
+      <td>41.0</td>
+      <td>-</td>
+      <td>74.2</td>
+      <td>-</td>
+      <td>5.73</td>
+      <td>-</td>
+      <td>4.68</td>
+      <td>-</td>
+      <td>6.82</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>MiniCPM-o 2.6</td>
+      <td>7B</td>
+      <td>38.6</td>
+      <td>-</td>
+      <td>77.8</td>
+      <td>-</td>
+      <td>6.86</td>
+      <td>-</td>
+      <td>6.19</td>
+      <td>-</td>
+      <td>5.18</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><b>Baichuan-Omni-1.5</td>
+      <td>7B</td>
+      <td>50.0</td>
+      <td><b>40.9</td>
+      <td>78.5</td>
+      <td><b>75.3</td>
+      <td>5.91</td>
+      <td><b>5.52</td>
+      <td>5.72</td>
+      <td>5.31</td>
+      <td>7.79</td>
+      <td><b>6.94</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
 
-</details>
-
-<details>
-
-<summary>点击查看语音生成能力详细评测结果。</summary>
-
-#### 语音生成能力
 
 </details>
 
@@ -1003,11 +1118,11 @@ coming soon
 ### 开源评测集
 **OpenMM-Medical**
 
-为了更全面的评估模型医疗多模态能力，我们构建了OpenMM-Medical，包含来自 42 个公开的医学图像数据集，例如 ACRIMA（眼底图像）、BioMediTech（显微镜图像）和 CoronaHack（X 射线），总共包含 88,996 张图像。
+为了更全面的评估模型医疗多模态能力，我们从公开医学图像数据集中收集了 OpenMM-Medical 评测集，包含 ACRIMA（眼底图像）、BioMediTech（显微镜图像）和 CoronaHack（X 射线）等，总共包含 88,996 张图像。
 
 **OpenAudioBench**
 
-为了更高效的评估模型的“智商”问题，我们构建了OpenAudioBench，共包含5个音频端到端理解子评测集，分别是4个公开评测集（llama question、WEB QA、TriviaQA、AlpacaEval），以及百川团队自建的语音逻辑推理评测集，共2701条数据，能够综合反映模型“智商”水平。
+为了更高效的评估模型的“智商”问题，我们构建了 OpenAudioBench，共包含5个音频端到端理解子评测集，分别是4个公开评测集（llama question、WEB QA、TriviaQA、AlpacaEval），以及百川团队自建的语音逻辑推理评测集，共2701条数据，能够综合反映模型“智商”水平。
 
 ### 致谢
 
@@ -1027,7 +1142,3 @@ coming soon
 - 您或您的关联方不是软件服务提供商、云服务提供商。
 - 您或您的关联方不存在将授予您的商用许可，未经百川许可二次授权给其他第三方的可能。
 - 在符合以上条件的前提下，您需要通过以下联系邮箱 opensource.contact@baichuan-inc.com，提交《Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base 模型社区许可协议》要求的申请材料。审核通过后，百川将特此授予您一个非排他性、全球性、不可转让、不可再许可、可撤销的商用版权许可。
-### 引用
-如需引用我们的工作，请使用如下 reference:
-@article{
-}
