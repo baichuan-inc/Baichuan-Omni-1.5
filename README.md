@@ -24,7 +24,7 @@ OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM_Medi
 ## 📖 Table of Contents
 
 - [🏁 Baichuan-Omni-1.5](#baichuan-omni-1.5)
-- [🧠 Model Architecture](#model-architecture)
+- [⭐ Model Architecture](#model-architecture)
 - [🧠 Multi-stage Omni-modal Training Framework](#multi-stage-omni-modal-training-framework)
 - [📊 Performance Evaluation](#performance-evaluation)
 - [🍰 Example Use Cases](#example-use-cases)
@@ -33,10 +33,11 @@ OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM_Medi
   - [Video Demo](#video-demo)
   - [Audio Demo](#audio-demo)
 - [⚙️ Fine-tuning](#fine-tuning)
+- [📈 Open-source Evaluation Datasets](#open-source-evaluation-datasets)
 - [📣 Acknowledgments](#acknowledgments)
 - [⚠️ Disclaimer](#disclaimer)
 - [📜 License](#license)
-- [📜 Citation](#citation)
+- [✒️ Citation](#citation)
 
 ## Baichuan-Omni-1.5
 
