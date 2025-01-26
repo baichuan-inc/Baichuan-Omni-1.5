@@ -24,6 +24,7 @@ OpenMM-Medical <a href="https://huggingface.co/datasets/baichuan-inc/OpenMM_Medi
 ## 📖 Table of Contents
 
 - [🏁 Baichuan-Omni-1.5](#baichuan-omni-1.5)
+- [🧠 Model Architecture](#model-architecture)
 - [🧠 Multi-stage Omni-modal Training Framework](#multi-stage-omni-modal-training-framework)
 - [📊 Performance Evaluation](#performance-evaluation)
 - [🍰 Example Use Cases](#example-use-cases)
@@ -52,6 +53,10 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 - **Strong Real-world Understanding and Other Features**: Enhances numerous visual understanding capabilities, handling images of arbitrary aspect ratios up to 1.8 million pixels. Our model gets 68.8% on RealWorldQA, outperforming commercial closed-source models (GPT-4o-mini) and recent open-source omni-modal models. It also ranks first in both English and Chinese subsets of MMBench with scores of 85.6% and 83.6%, respectively.
 
 ### Model Architecture
+
+<div align="center">
+<img src="./assets/architecture.png" , width=80%>
+</div>
 
 - **End-to-End Omni-modal Architecture**: Trains different modality encoders/decoders through a multi-stage, end-to-end progressive method to fully leverage rich knowledge across modalities, promoting complementary knowledge integration. During the omni-modal pretraining phase, the model is entirely trained using NTP loss.
 - **High-Quality Controllable Voice Solutions**: Redesigns the multimodal system prompt to include traditional text prompts and **voice system prompts** for specifying the model's voice characteristics.
