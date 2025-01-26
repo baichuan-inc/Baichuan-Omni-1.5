@@ -1069,7 +1069,11 @@ Baichuan-Omni-1.5 represents the latest and most advanced model in the Baichuan-
 ```bash
 conda create -n baichuan_omni python==3.12
 conda activate baichuan_omni
+pip install torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 --index-url https://download.pytorch.org/whl/cu124
 pip install -r baichuan_omni_requirements.txt
+pip install accelerate==0.33.0
+pip install -U accelerate
+pip install flash_attn==2.6.3
 apt install llvm ffmpeg
 ```
 ##### Download the model and modify the model path
