@@ -1134,3 +1134,16 @@ Community use of the Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base models must comply
 - There is no possibility of re-granting the commercial license to third parties without prior approval from Baichuan Inc.
 
 Under these conditions, you need to submit the required application materials for the "Baichuan-Omni-1.5/Baichuan-Omni-1.5-Base Community License Agreement" via email at opensource.contact@baichuan-inc.com. Upon approval, Baichuan Inc. will grant you a non-exclusive, global, non-transferable, non-sublicensable, and revocable commercial license.
+
+### Citation
+
+If you find our model/code/paper helpful, please consider citing our papers 📝 and staring us ⭐️！
+
+```bib
+@article{li2025baichuan,
+  title={Baichuan-Omni-1.5 Technical Report},
+  author={Li, Yadong and Liu, Jun and Zhang, Tao and Chen, Song and Li, Tianpeng and Li, Zehuan and Liu, Lijun and Ming, Lingfeng and Dong, Guosheng and Pan, Da and others},
+  journal={arXiv preprint arXiv:2501.15368},
+  year={2025}
+}
+```
