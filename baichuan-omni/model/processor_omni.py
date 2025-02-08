@@ -618,7 +618,7 @@ class OmniMMProcessor(object):
             # 本地路径
             video_path = video_info['local']
             # 帧保存本地路径
-            frame_path = video_path.split('.')[0] + frame_suffix
+            frame_path = video_path[:video_path.rfind('.')] + frame_suffix
             mm_obj_byte = self._get_vision_obj_byte('local', video_path)
         elif 'base64' in video_info.keys():
             md5 = hashlib.md5(video_info['base64'].encode('utf-8')).hexdigest()
@@ -626,7 +626,7 @@ class OmniMMProcessor(object):
                 video_path = os.path.join(self.relative_path, md5)
             else:
                 video_path = os.path.join(os.getcwd(), md5)
-            frame_path = md5 + frame_suffix
+            frame_path = video_path + frame_suffix
             mm_obj_byte = self._get_vision_obj_byte('base64', video_info['base64'])
         elif 'url' in video_info.keys():
             md5 = hashlib.md5(video_info['url'].encode('utf-8')).hexdigest()
@@ -634,7 +634,7 @@ class OmniMMProcessor(object):
                 video_path = os.path.join(self.relative_path, md5)
             else:
                 video_path = os.path.join(os.getcwd(), md5)
-            frame_path = md5 + frame_suffix
+            frame_path = video_path + frame_suffix
             mm_obj_byte = self._get_vision_obj_byte('url', video_info['url'])
         else:
             raise ValueError('unvalid video server !!!')
@@ -778,7 +778,7 @@ class OmniMMProcessor(object):
             if len(ret.input_ids) > self.tokenizer.model_max_length-1:  # 过滤长文本
                 raise ValueError(f"Text too long, please check text length！ 【{text[:5]+'...'*6+text[-5:]}】")
         else:
-            raise ValueError(f"mm_label not supportted! must in ['audio', 'image', 'text'] but get {mm_label}")
+            raise ValueError(f"mm_label not supportted! must in ['audio', 'audiogen', 'image', 'video', 'text'] but get {mm_label}")
         return ret
     
     def process_one(self, text, index=0, raw_only=False):

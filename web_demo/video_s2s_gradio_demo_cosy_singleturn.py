@@ -36,9 +36,7 @@ def init_model():
     ).cuda()
     tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code=True)
     model.training = False
-    model.bind_processor(
-        tokenizer, training=False, relative_path="/", default_client="cos"
-    )
+    model.bind_processor(tokenizer, training=False, relative_path=g_cache_dir)
     return model, tokenizer
 
 model, tokenizer = init_model()
@@ -89,7 +87,7 @@ def generate_response(input_string):
         videos_grid = ret.videos_grid if ret.videos_grid is not None else None,
         encoder_length=ret.encoder_length.cuda() if ret.encoder_length is not None else None,
         bridge_length=ret.bridge_length.cuda() if ret.bridge_length is not None else None,
-        max_new_tokens=50,
+        max_new_tokens=256,
         tokenizer=tokenizer,
         stop_strings=["<audiogen_start_baichuan>", "，", "。"],
         do_sample=True,

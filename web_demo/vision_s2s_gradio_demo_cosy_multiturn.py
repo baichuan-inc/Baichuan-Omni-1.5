@@ -32,7 +32,7 @@ def init_model():
     ).cuda()
     tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code=True)
     model.training = False
-    model.bind_processor(tokenizer, training=False, relative_path="/")
+    model.bind_processor(tokenizer, training=False, relative_path=g_cache_dir)
     return model, tokenizer
 model, tokenizer = init_model()
 
@@ -209,7 +209,7 @@ def clear_history():
     global g_cache_dir
     g_history = []
     g_turn_i = 0
-    os.system(f"rm -rf {g_cache_dir}")
+    # os.system(f"rm -rf {g_cache_dir}")
     return None, None, None, None, None, None
 
 def clear_upload_file():
@@ -228,41 +228,149 @@ def preprocess_messages(messages, audiogen_flag=True):
     return text
 
 def parse_assistant_content(content):
+    if '<audiogen_start_baichuan>' in content:
+        wave = []
+        text = ""
 
-    wave = []
-    text = ""
+        result = []
 
-    result = []
+        parts = re.split(r'<audiogen_start_baichuan>', content)
+        prev_text = parts[0].strip()
+        
+        for part in parts[1:]:
+            end_split = re.split(r'<audiogen_end_baichuan>', part, 1)
+            
+            if len(end_split) != 2:
+                continue  
+                
+            json_str, remaining = end_split
+            json_str = json_str.strip()
 
-    parts = re.split(r'<audiogen_start_baichuan>', content)
-    prev_text = parts[0].strip()
+            cleaned_json = json_str.replace('\\/', '/')
+            
+            try:
+                json_data = json.loads(cleaned_json)
+            except json.JSONDecodeError:
+                continue  
+            if prev_text:
+                result.append((prev_text, json_data))
+                
+            prev_text = remaining.strip()
     
-    for part in parts[1:]:
-        end_split = re.split(r'<audiogen_end_baichuan>', part, 1)
-        
-        if len(end_split) != 2:
-            continue  
-            
-        json_str, remaining = end_split
-        json_str = json_str.strip()
+        for t, w in result:
+            text += t
+            wav_pkg = load_audio(w["path"])
+            wave.append(wav_pkg[1])
+        wave = np.concatenate(wave, axis=0)
+        return text, (wav_pkg[0], wave)
+    else:
+        return content, None  # Return None if no audio generated
 
-        cleaned_json = json_str.replace('\\/', '/')
-        
-        try:
-            json_data = json.loads(cleaned_json)
-        except json.JSONDecodeError:
-            continue  
-        if prev_text:
-            result.append((prev_text, json_data))
-            
-        prev_text = remaining.strip()
- 
-    for t, w in result:
-        text += t
-        wav_pkg = load_audio(w["path"])
-        wave.append(wav_pkg[1])
-    wave = np.concatenate(wave, axis=0)
-    return text, (wav_pkg[0], wave)
+
+def split_text(text, match_regex):
+    matches = list(re.finditer(match_regex, text))
+    # 初始化结果列表
+    result = []
+    match_flag_list = []
+    # 上一个匹配的结束位置
+    last_end = 0
+    # 遍历所有匹配项
+    for match in matches:
+        # 添加匹配项之前的部分
+        if text[last_end:match.start()]:
+            result.append(text[last_end:match.start()])
+            match_flag_list.append(False)
+        # 添加匹配项
+        result.append(match.group(0))
+        match_flag_list.append(True)
+        # 更新上一个匹配的结束位置
+        last_end = match.end()
+    # 添加最后一个匹配项之后的部分
+    if text[last_end:]:
+        result.append(text[last_end:])
+        match_flag_list.append(False)
+    return result, match_flag_list
+
+def split_multimodal_chunk(text_list, mm_label_list, mtype='audio'):
+    # 抽取text中的json格式音频/图像信息，读取并转化为特征，同时估计encoder token数，填入对应数量的pad token
+    if (audio_start_token != None) and (mtype == 'audio'):
+        match_regex = re.compile(audio_start_token + '.*?' + audio_end_token,re.S)
+        drop_regex = re.compile(audio_start_token + "|" + audio_end_token,re.S)
+    elif (image_start_token != None) and (mtype == 'image'):
+        match_regex = re.compile(image_start_token + '.*?' + image_end_token,re.S)
+        drop_regex = re.compile(image_start_token + "|" + image_end_token,re.S)
+    elif (video_start_token != None) and (mtype == 'video'):
+        match_regex = re.compile(video_start_token + '.*?' + video_end_token,re.S)
+        drop_regex = re.compile(video_start_token + "|" + video_end_token,re.S)
+    else:
+        raise ValueError("mtype not supportted!")
+    new_text_list = []
+    new_mm_label_list = []
+    for text,mm_label in zip(text_list,mm_label_list):
+        for t,m in zip(*split_text(text, match_regex)):
+            if m:
+                new_text_list.append(re.sub(drop_regex, '', t))
+                new_mm_label_list.append(mtype)
+            else:
+                new_text_list.append(t)
+                new_mm_label_list.append(mm_label)
+    return new_text_list, new_mm_label_list
+
+def parse_user_content(content):
+    new_messages = []
+    
+    all_text_list = [content]
+    all_mm_label_list = ['text']
+    # 处理多模态信息
+    for mtype in ["image", "video", "audio"]:
+        all_text_list, all_mm_label_list = split_multimodal_chunk(all_text_list, all_mm_label_list, mtype)
+    
+    for text, mm_label in zip(all_text_list, all_mm_label_list):
+        if mm_label == 'audio':
+            mm_info = re.sub(re.compile(audio_start_token + "|" + audio_end_token), '', text)
+            audio_path = json.loads(mm_info)["path"]
+            print(audio_path)
+            # wav_pkg = load_audio(audio_path)
+            audio_content = gr.Audio(audio_path)
+            new_messages.append(
+                {
+                    "role": "user",
+                    "content": audio_content,
+                }
+            )
+        elif mm_label == 'image':
+            mm_info = re.sub(re.compile(image_start_token + "|" + image_end_token), '', text)
+            image_path = json.loads(mm_info)["local"]
+            print(image_path)
+            image_content = gr.Image(image_path)
+            new_messages.append(
+                {
+                    "role": "user",
+                    "content": image_content,
+                }
+            )
+        elif mm_label == 'video':
+            mm_info = re.sub(re.compile(video_start_token + "|" + video_end_token), '', text)
+            video_path = json.loads(mm_info)["local"]
+            print(video_path)
+            video_content = gr.Video(video_path)
+            new_messages.append(
+                {
+                    "role": "user",
+                    "content": video_content,
+                }
+            )
+        elif mm_label == 'text':
+            new_messages.append(
+                {
+                    "role": "user",
+                    "content": text,
+                }
+            )
+        else:
+            raise ValueError(f"mm_label not supportted! must in ['audio', 'image', 'video', 'text'] but get {mm_label}")
+    
+    return new_messages
 
 def postprocess_messages(messages):
     
@@ -273,12 +381,13 @@ def postprocess_messages(messages):
 
         if role == "assistant":
             text, wave = parse_assistant_content(content)
-            new_messages.append(
-                {
-                    "role": role,
-                    "content": gr.Audio(wave),
-                }
-            )
+            if wave is not None:
+                new_messages.append(
+                    {
+                        "role": role,
+                        "content": gr.Audio(wave),
+                    }
+                )
             new_messages.append(
                 {
                     "role": role,
@@ -286,46 +395,7 @@ def postprocess_messages(messages):
                 }
             )
         elif role == "user":
-            match_regex = re.compile(image_start_token + r'(.*?)' + image_end_token)
-            mm_info_list = re.findall(match_regex, content)
-            for mm_info in mm_info_list:
-                image_path = json.loads(mm_info)["local"]
-                print(image_path)
-                image_content = gr.Image(image_path)
-                new_messages.append(
-                    {
-                        "role": role,
-                        "content": image_content,
-                    }
-                )
-            
-            match_regex = re.compile(video_start_token + r'(.*?)' + video_end_token)
-            mm_info_list = re.findall(match_regex, content)
-            for mm_info in mm_info_list:
-                video_path = json.loads(mm_info)["local"]
-                print(video_path)
-                video_content = gr.Video(video_path)
-                new_messages.append(
-                    {
-                        "role": role,
-                        "content": video_content,
-                    }
-                )
-            
-            pattern = audio_start_token + r'(.*?)' + audio_end_token
-            match = re.search(pattern, content, re.DOTALL)
-            if match:
-                audio_path_json = match.group(1)
-                audio_path = json.loads(audio_path_json)["path"]
-                print(audio_path)
-                wav_pkg = load_audio(audio_path)
-                audio_content = gr.Audio(wav_pkg)
-                new_messages.append(
-                    {
-                        "role": role,
-                        "content": audio_content,
-                    }
-                )
+            new_messages += parse_user_content(content)
         else: # system
             new_messages.append(
                 {
@@ -478,9 +548,11 @@ with gr.Blocks() as demo:
 # 启动应用
 if __name__ == "__main__":
     demo.launch(
-        share=True,
+        ssl_verify=False, 
+        share=True, 
         server_name="0.0.0.0",
-    server_port=145,
-    debug=False,
-    share_server_protocol="https",
-    allowed_paths=[g_cache_dir])
+        server_port=12345,
+        debug=False,
+        share_server_protocol="https",
+        allowed_paths=[g_cache_dir]
+    )

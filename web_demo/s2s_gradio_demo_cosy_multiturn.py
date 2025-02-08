@@ -166,6 +166,7 @@ def clear_history():
     g_history = []
     g_turn_i = 0
     os.system(f"rm -rf {g_cache_dir}")
+    os.makedirs(g_cache_dir, exist_ok=True)
 
 
 def preprocess_messages(messages, audiogen_flag=True):
